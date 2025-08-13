@@ -1,504 +1,468 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title></title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="2575.5">
-  <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Menlo; color: #4689cc; -webkit-text-stroke: #4689cc}
-    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Menlo; color: #8cd3fe; -webkit-text-stroke: #8cd3fe}
-    p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Menlo; color: #c27e65; -webkit-text-stroke: #c27e65}
-    p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Menlo; color: #cacaca; -webkit-text-stroke: #cacaca}
-    p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Menlo; color: #6d7378; -webkit-text-stroke: #6d7378}
-    p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Menlo; color: #cacaca; -webkit-text-stroke: #cacaca; min-height: 16.0px}
-    p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Menlo; color: #71c083; -webkit-text-stroke: #71c083}
-    span.s1 {font-kerning: none; background-color: #171818}
-    span.s2 {font-kerning: none; color: #8cd3fe; background-color: #171818; -webkit-text-stroke: 0px #8cd3fe}
-    span.s3 {font-kerning: none; color: #6d6d6d; background-color: #171818; -webkit-text-stroke: 0px #6d6d6d}
-    span.s4 {font-kerning: none; color: #cacaca; background-color: #171818; -webkit-text-stroke: 0px #cacaca}
-    span.s5 {font-kerning: none; color: #c27e65; background-color: #171818; -webkit-text-stroke: 0px #c27e65}
-    span.s6 {font-kerning: none; color: #4689cc; background-color: #171818; -webkit-text-stroke: 0px #4689cc}
-    span.s7 {font-kerning: none; color: #d4d4d4; background-color: #171818; -webkit-text-stroke: 0px #d4d4d4}
-    span.s8 {font-kerning: none; color: #71c083; background-color: #171818; -webkit-text-stroke: 0px #71c083}
-    span.s9 {font-kerning: none; color: #6d7378; background-color: #171818; -webkit-text-stroke: 0px #6d7378}
-    span.s10 {font-kerning: none; color: #a7c598; background-color: #171818; -webkit-text-stroke: 0px #a7c598}
-    span.s11 {font-kerning: none}
-    span.s12 {font-kerning: none; color: #b76ff7; background-color: #171818; -webkit-text-stroke: 0px #b76ff7}
-    span.s13 {font-kerning: none; color: #f67c30; background-color: #171818; -webkit-text-stroke: 0px #f67c30}
-    span.s14 {font-kerning: none; color: #36c0a0; background-color: #171818; -webkit-text-stroke: 0px #36c0a0}
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wisnicki Family - Glacier National Park Itinerary</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0C1427; /* Dark Navy Blue */
+            color: #f1f5f9; 
+        }
+        .day-card {
+            background-color: #162039; /* Slightly lighter navy */
+            border: 1px solid #334155; /* Slate-700 border */
+            border-radius: 0.75rem;
+            transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+        .day-card:hover,
+        details[open].day-card {
+            border-color: #67e8f9; /* Bright Cyan */
+        }
+        .current-day {
+            border-color: #67e8f9; /* Bright Cyan */
+            box-shadow: 0 0 15px rgba(103, 232, 249, 0.3);
+        }
+        .details-content {
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out;
+        }
+        details[open] .details-content {
+            max-height: 2000px;
+        }
+        details:not([open]) .details-content {
+            max-height: 0;
+        }
+        details summary::-webkit-details-marker {
+            display: none;
+        }
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 50;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .modal-overlay.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        .modal-content {
+            background-color: #162039;
+            padding: 2rem;
+            border-radius: 0.75rem;
+            border: 1px solid #67e8f9;
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+            transform: scale(0.95);
+            transition: transform 0.3s ease;
+        }
+        .modal-overlay.visible .modal-content {
+            transform: scale(1);
+        }
+        .reminder {
+            background-color: rgba(103, 232, 249, 0.1);
+            border-left: 4px solid #67e8f9;
+            padding: 0.75rem 1rem;
+            border-radius: 0.25rem;
+        }
+    </style>
 </head>
 <body>
-<p class="p1"><span class="s1">&lt;!DOCTYPE</span><span class="s2"> html</span><span class="s1">&gt;</span></p>
-<p class="p1"><span class="s3">&lt;</span><span class="s1">html</span><span class="s4"> </span><span class="s2">lang</span><span class="s3">=</span><span class="s5">"en"</span><span class="s3">&gt;</span></p>
-<p class="p1"><span class="s3">&lt;</span><span class="s1">head</span><span class="s3">&gt;</span></p>
-<p class="p2"><span class="s4"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;</span><span class="s6">meta</span><span class="s4"> </span><span class="s1">charset</span><span class="s3">=</span><span class="s5">"UTF-8"</span><span class="s3">&gt;</span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;</span><span class="s6">meta</span><span class="s4"> </span><span class="s2">name</span><span class="s3">=</span><span class="s1">"viewport"</span><span class="s4"> </span><span class="s2">content</span><span class="s3">=</span><span class="s1">"width=device-width, initial-scale=1.0"</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;</span><span class="s6">title</span><span class="s3">&gt;</span><span class="s1">Wisnicki Family - Glacier National Park Itinerary</span><span class="s3">&lt;/</span><span class="s6">title</span><span class="s3">&gt;</span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;</span><span class="s6">script</span><span class="s4"> </span><span class="s2">src</span><span class="s3">=</span><span class="s1">"https://cdn.tailwindcss.com"</span><span class="s3">&gt;&lt;/</span><span class="s6">script</span><span class="s3">&gt;</span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;</span><span class="s6">script</span><span class="s4"> </span><span class="s2">src</span><span class="s3">=</span><span class="s1">"https://unpkg.com/lucide@latest"</span><span class="s3">&gt;&lt;/</span><span class="s6">script</span><span class="s3">&gt;</span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;</span><span class="s6">link</span><span class="s4"> </span><span class="s2">href</span><span class="s3">=</span><span class="s1">"https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap"</span><span class="s4"> </span><span class="s2">rel</span><span class="s3">=</span><span class="s1">"stylesheet"</span><span class="s3">&gt;</span></p>
-<p class="p1"><span class="s4"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;</span><span class="s1">style</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s6">body</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">font-family:</span><span class="s1"> </span><span class="s8">'Inter'</span><span class="s7">,</span><span class="s1"> </span><span class="s5">sans-serif</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">background-color:</span><span class="s1"> #0C1427</span><span class="s7">;</span><span class="s1"> </span><span class="s9">/* Dark Navy Blue */</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">color:</span><span class="s1"> #f1f5f9</span><span class="s7">;</span><span class="s1"><span class="Apple-converted-space"> </span></span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">}</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s6">.day-card</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p5"><span class="s4"><span class="Apple-converted-space">            </span></span><span class="s2">background-color:</span><span class="s4"> #162039</span><span class="s7">;</span><span class="s4"> </span><span class="s1">/* Slightly lighter navy */</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">border:</span><span class="s1"> </span><span class="s10">1px</span><span class="s1"> </span><span class="s5">solid</span><span class="s1"> #334155</span><span class="s7">;</span><span class="s1"> </span><span class="s9">/* Slate-700 border */</span></p>
-<p class="p2"><span class="s4"><span class="Apple-converted-space">            </span></span><span class="s1">border-radius:</span><span class="s4"> </span><span class="s10">0.75rem</span><span class="s7">;</span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">            </span></span><span class="s2">transition:</span><span class="s4"> </span><span class="s1">border-color</span><span class="s4"> </span><span class="s10">0.3s</span><span class="s4"> </span><span class="s1">ease-in-out</span><span class="s7">,</span><span class="s4"> </span><span class="s1">box-shadow</span><span class="s4"> </span><span class="s10">0.3s</span><span class="s4"> </span><span class="s1">ease-in-out</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">}</span></p>
-<p class="p1"><span class="s4"><span class="Apple-converted-space">        </span></span><span class="s1">.day-card:hover</span><span class="s7">,</span></p>
-<p class="p1"><span class="s4"><span class="Apple-converted-space">        </span></span><span class="s1">details</span><span class="s7">[</span><span class="s5">open</span><span class="s7">]</span><span class="s1">.day-card</span><span class="s4"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">border-color:</span><span class="s1"> #67e8f9</span><span class="s7">;</span><span class="s1"> </span><span class="s9">/* Bright Cyan */</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">}</span></p>
-<p class="p1"><span class="s4"><span class="Apple-converted-space">        </span></span><span class="s1">.current-day</span><span class="s4"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">border-color:</span><span class="s1"> #67e8f9</span><span class="s7">;</span><span class="s1"> </span><span class="s9">/* Bright Cyan */</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">box-shadow:</span><span class="s1"> </span><span class="s10">0</span><span class="s1"> </span><span class="s10">0</span><span class="s1"> </span><span class="s10">15px</span><span class="s1"> </span><span class="s5">rgba(</span><span class="s10">103</span><span class="s7">,</span><span class="s1"> </span><span class="s10">232</span><span class="s7">,</span><span class="s1"> </span><span class="s10">249</span><span class="s7">,</span><span class="s1"> </span><span class="s10">0.3</span><span class="s5">)</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">}</span></p>
-<p class="p1"><span class="s4"><span class="Apple-converted-space">        </span></span><span class="s1">.details-content</span><span class="s4"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">overflow:</span><span class="s1"> </span><span class="s5">hidden</span><span class="s7">;</span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">            </span></span><span class="s2">transition:</span><span class="s4"> </span><span class="s1">max-height</span><span class="s4"> </span><span class="s10">0.5s</span><span class="s4"> </span><span class="s1">ease-in-out</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">}</span></p>
-<p class="p1"><span class="s4"><span class="Apple-converted-space">        </span></span><span class="s1">details</span><span class="s7">[</span><span class="s5">open</span><span class="s7">]</span><span class="s4"> </span><span class="s1">.details-content</span><span class="s4"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">max-height:</span><span class="s1"> </span><span class="s10">2000px</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">}</span></p>
-<p class="p1"><span class="s4"><span class="Apple-converted-space">        </span></span><span class="s1">details:not</span><span class="s4">(</span><span class="s7">[</span><span class="s5">open</span><span class="s7">]</span><span class="s4">) </span><span class="s1">.details-content</span><span class="s4"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">max-height:</span><span class="s1"> </span><span class="s10">0</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">}</span></p>
-<p class="p1"><span class="s4"><span class="Apple-converted-space">        </span></span><span class="s1">details</span><span class="s4"> </span><span class="s1">summary::-webkit-details-marker</span><span class="s4"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">display:</span><span class="s1"> </span><span class="s5">none</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">}</span></p>
-<p class="p1"><span class="s4"><span class="Apple-converted-space">        </span></span><span class="s1">.modal-overlay</span><span class="s4"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">position:</span><span class="s1"> </span><span class="s5">fixed</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">top:</span><span class="s1"> </span><span class="s10">0</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">left:</span><span class="s1"> </span><span class="s10">0</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">right:</span><span class="s1"> </span><span class="s10">0</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">bottom:</span><span class="s1"> </span><span class="s10">0</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">background:</span><span class="s1"> </span><span class="s5">rgba(</span><span class="s10">0</span><span class="s7">,</span><span class="s1"> </span><span class="s10">0</span><span class="s7">,</span><span class="s1"> </span><span class="s10">0</span><span class="s7">,</span><span class="s1"> </span><span class="s10">0.7</span><span class="s5">)</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">display:</span><span class="s1"> </span><span class="s5">flex</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">align-items:</span><span class="s1"> </span><span class="s5">center</span><span class="s7">;</span></p>
-<p class="p2"><span class="s4"><span class="Apple-converted-space">            </span></span><span class="s1">justify-content:</span><span class="s4"> </span><span class="s5">center</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">z-index:</span><span class="s1"> </span><span class="s10">50</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">opacity:</span><span class="s1"> </span><span class="s10">0</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">visibility:</span><span class="s1"> </span><span class="s5">hidden</span><span class="s7">;</span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">            </span></span><span class="s2">transition:</span><span class="s4"> </span><span class="s1">opacity</span><span class="s4"> </span><span class="s10">0.3s</span><span class="s4"> </span><span class="s1">ease</span><span class="s7">,</span><span class="s4"> </span><span class="s1">visibility</span><span class="s4"> </span><span class="s10">0.3s</span><span class="s4"> </span><span class="s1">ease</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">}</span></p>
-<p class="p1"><span class="s4"><span class="Apple-converted-space">        </span></span><span class="s1">.modal-overlay.visible</span><span class="s4"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">opacity:</span><span class="s1"> </span><span class="s10">1</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">visibility:</span><span class="s1"> </span><span class="s5">visible</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">}</span></p>
-<p class="p1"><span class="s4"><span class="Apple-converted-space">        </span></span><span class="s1">.modal-content</span><span class="s4"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">background-color:</span><span class="s1"> #162039</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">padding:</span><span class="s1"> </span><span class="s10">2rem</span><span class="s7">;</span></p>
-<p class="p2"><span class="s4"><span class="Apple-converted-space">            </span></span><span class="s1">border-radius:</span><span class="s4"> </span><span class="s10">0.75rem</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">border:</span><span class="s1"> </span><span class="s10">1px</span><span class="s1"> </span><span class="s5">solid</span><span class="s1"> #67e8f9</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">width:</span><span class="s1"> </span><span class="s10">90%</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">max-width:</span><span class="s1"> </span><span class="s10">500px</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">position:</span><span class="s1"> </span><span class="s5">relative</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">transform:</span><span class="s1"> </span><span class="s5">scale(</span><span class="s10">0.95</span><span class="s5">)</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">transition:</span><span class="s1"> </span><span class="s5">transform</span><span class="s1"> </span><span class="s10">0.3s</span><span class="s1"> </span><span class="s5">ease</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">}</span></p>
-<p class="p1"><span class="s4"><span class="Apple-converted-space">        </span></span><span class="s1">.modal-overlay.visible</span><span class="s4"> </span><span class="s1">.modal-content</span><span class="s4"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">transform:</span><span class="s1"> </span><span class="s5">scale(</span><span class="s10">1</span><span class="s5">)</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">}</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s6">.reminder</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p2"><span class="s4"><span class="Apple-converted-space">            </span></span><span class="s1">background-color:</span><span class="s4"> </span><span class="s5">rgba(</span><span class="s10">103</span><span class="s7">,</span><span class="s4"> </span><span class="s10">232</span><span class="s7">,</span><span class="s4"> </span><span class="s10">249</span><span class="s7">,</span><span class="s4"> </span><span class="s10">0.1</span><span class="s5">)</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">border-left:</span><span class="s1"> </span><span class="s10">4px</span><span class="s1"> </span><span class="s5">solid</span><span class="s1"> #67e8f9</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">padding:</span><span class="s1"> </span><span class="s10">0.75rem</span><span class="s1"> </span><span class="s10">1rem</span><span class="s7">;</span></p>
-<p class="p2"><span class="s4"><span class="Apple-converted-space">            </span></span><span class="s1">border-radius:</span><span class="s4"> </span><span class="s10">0.25rem</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">}</span></p>
-<p class="p1"><span class="s4"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;/</span><span class="s1">style</span><span class="s3">&gt;</span></p>
-<p class="p1"><span class="s3">&lt;/</span><span class="s1">head</span><span class="s3">&gt;</span></p>
-<p class="p1"><span class="s3">&lt;</span><span class="s1">body</span><span class="s3">&gt;</span></p>
-<p class="p6"><span class="s11"></span><br></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;</span><span class="s6">div</span><span class="s4"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"container mx-auto p-4 md:p-8 max-w-4xl"</span><span class="s3">&gt;</span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">        </span></span><span class="s3">&lt;</span><span class="s6">header</span><span class="s4"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"text-white mb-6"</span><span class="s3">&gt;</span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">            </span></span><span class="s3">&lt;</span><span class="s6">div</span><span class="s4"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"flex justify-between items-center border-b border-slate-700 pb-4"</span><span class="s3">&gt;</span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">                </span></span><span class="s3">&lt;</span><span class="s6">h1</span><span class="s4"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"text-2xl font-bold flex items-center"</span><span class="s3">&gt;</span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">                    </span></span><span class="s3">&lt;</span><span class="s6">i</span><span class="s4"> </span><span class="s2">data-lucide</span><span class="s3">=</span><span class="s1">"mountain-snow"</span><span class="s4"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"mr-3 text-cyan-400"</span><span class="s3">&gt;&lt;/</span><span class="s6">i</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>Wisnicki Family Trip</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s3">&lt;/</span><span class="s6">h1</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s3">&lt;</span><span class="s6">div</span><span class="s1"> </span><span class="s2">class</span><span class="s3">=</span><span class="s5">"text-right"</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span></span><span class="s3">&lt;</span><span class="s6">p</span><span class="s1"> </span><span class="s2">class</span><span class="s3">=</span><span class="s5">"font-semibold"</span><span class="s3">&gt;</span><span class="s1">Glacier National Park</span><span class="s3">&lt;/</span><span class="s6">p</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span></span><span class="s3">&lt;</span><span class="s6">p</span><span class="s1"> </span><span class="s2">class</span><span class="s3">=</span><span class="s5">"text-sm text-slate-400"</span><span class="s3">&gt;</span><span class="s1">August 17 - 21, 2025</span><span class="s3">&lt;/</span><span class="s6">p</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s3">&lt;/</span><span class="s6">div</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s3">&lt;/</span><span class="s6">div</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s3">&lt;/</span><span class="s6">header</span><span class="s3">&gt;</span></p>
-<p class="p6"><span class="s11"></span><br></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">        </span></span><span class="s3">&lt;</span><span class="s6">div</span><span class="s4"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"grid grid-cols-3 gap-4 text-center bg-[#162039] p-4 rounded-lg mb-8 border border-slate-700"</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s3">&lt;</span><span class="s6">div</span><span class="s3">&gt;</span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">                </span></span><span class="s3">&lt;</span><span class="s6">p</span><span class="s4"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"text-xs text-slate-400 uppercase tracking-wider"</span><span class="s3">&gt;</span><span class="s4">Current Activity</span><span class="s3">&lt;/</span><span class="s6">p</span><span class="s3">&gt;</span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">                </span></span><span class="s3">&lt;</span><span class="s6">p</span><span class="s4"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"text-lg font-semibold text-white"</span><span class="s3">&gt;</span><span class="s4">Trip Overview</span><span class="s3">&lt;/</span><span class="s6">p</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s3">&lt;/</span><span class="s6">div</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s3">&lt;</span><span class="s6">div</span><span class="s3">&gt;</span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">                </span></span><span class="s3">&lt;</span><span class="s6">p</span><span class="s4"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"text-xs text-slate-400 uppercase tracking-wider"</span><span class="s3">&gt;</span><span class="s4">Local Time</span><span class="s3">&lt;/</span><span class="s6">p</span><span class="s3">&gt;</span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">                </span></span><span class="s3">&lt;</span><span class="s6">p</span><span class="s4"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"text-lg font-semibold text-white"</span><span class="s4"> </span><span class="s2">id</span><span class="s3">=</span><span class="s1">"local-time"</span><span class="s3">&gt;</span><span class="s4">--:-- --</span><span class="s3">&lt;/</span><span class="s6">p</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s3">&lt;/</span><span class="s6">div</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s3">&lt;</span><span class="s6">div</span><span class="s3">&gt;</span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">                </span></span><span class="s3">&lt;</span><span class="s6">p</span><span class="s4"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"text-xs text-slate-400 uppercase tracking-wider"</span><span class="s3">&gt;</span><span class="s4">Weather</span><span class="s3">&lt;/</span><span class="s6">p</span><span class="s3">&gt;</span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">                </span></span><span class="s3">&lt;</span><span class="s6">a</span><span class="s4"> </span><span class="s2">href</span><span class="s3">=</span><span class="s1">"https://www.google.com/search?q=weather+in+glacier+national+park"</span><span class="s4"> </span><span class="s2">target</span><span class="s3">=</span><span class="s1">"_blank"</span><span class="s4"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"text-lg font-semibold text-cyan-400 hover:underline cursor-pointer"</span><span class="s3">&gt;</span><span class="s4">View Forecast</span><span class="s3">&lt;/</span><span class="s6">a</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s3">&lt;/</span><span class="s6">div</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s3">&lt;/</span><span class="s6">div</span><span class="s3">&gt;</span></p>
-<p class="p6"><span class="s11"></span><br></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">        </span></span><span class="s3">&lt;</span><span class="s6">div</span><span class="s4"> </span><span class="s2">id</span><span class="s3">=</span><span class="s1">"itinerary-container"</span><span class="s4"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"space-y-4"</span><span class="s3">&gt;</span></p>
-<p class="p5"><span class="s4"><span class="Apple-converted-space">            </span></span><span class="s1">&lt;!-- Itinerary will be dynamically generated here --&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s3">&lt;/</span><span class="s6">div</span><span class="s3">&gt;</span></p>
-<p class="p6"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">        </span></span><span class="s3">&lt;</span><span class="s6">footer</span><span class="s4"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"text-center mt-12 text-slate-500"</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s3">&lt;</span><span class="s6">p</span><span class="s3">&gt;</span><span class="s1">Itinerary by Avi Weisz 848-480-5197</span><span class="s3">&lt;/</span><span class="s6">p</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s3">&lt;/</span><span class="s6">footer</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;/</span><span class="s6">div</span><span class="s3">&gt;</span></p>
-<p class="p6"><span class="s11"></span><br></p>
-<p class="p5"><span class="s4"><span class="Apple-converted-space">    </span></span><span class="s1">&lt;!-- Reservation Modal --&gt;</span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;</span><span class="s6">div</span><span class="s4"> </span><span class="s2">id</span><span class="s3">=</span><span class="s1">"reservation-modal"</span><span class="s4"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"modal-overlay"</span><span class="s3">&gt;</span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">        </span></span><span class="s3">&lt;</span><span class="s6">div</span><span class="s4"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"modal-content"</span><span class="s3">&gt;</span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">            </span></span><span class="s3">&lt;</span><span class="s6">button</span><span class="s4"> </span><span class="s2">onclick</span><span class="s3">=</span><span class="s1">"closeModal()"</span><span class="s4"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"absolute top-4 right-4 text-slate-400 hover:text-white"</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s3">&lt;</span><span class="s6">i</span><span class="s1"> </span><span class="s2">data-lucide</span><span class="s3">=</span><span class="s5">"x"</span><span class="s1"> </span><span class="s2">class</span><span class="s3">=</span><span class="s5">"w-6 h-6"</span><span class="s3">&gt;&lt;/</span><span class="s6">i</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s3">&lt;/</span><span class="s6">button</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s3">&lt;</span><span class="s6">div</span><span class="s1"> </span><span class="s2">id</span><span class="s3">=</span><span class="s5">"modal-body"</span><span class="s3">&gt;</span></p>
-<p class="p5"><span class="s4"><span class="Apple-converted-space">                </span></span><span class="s1">&lt;!-- Modal content will be injected here --&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s3">&lt;/</span><span class="s6">div</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s3">&lt;/</span><span class="s6">div</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;/</span><span class="s6">div</span><span class="s3">&gt;</span></p>
-<p class="p6"><span class="s11"></span><br></p>
-<p class="p1"><span class="s4"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;</span><span class="s1">script</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s12">const</span><span class="s1"> itineraryData </span><span class="s7">=</span><span class="s1"> </span><span class="s7">[</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>day</span><span class="s7">:</span><span class="s1"> </span><span class="s13">1</span><span class="s7">,</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>date</span><span class="s7">:</span><span class="s1"> </span><span class="s8">"2025-08-17"</span><span class="s7">,</span></p>
-<p class="p7"><span class="s4"><span class="Apple-converted-space">                </span>title</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"Arrival &amp; Zipline Fun"</span><span class="s7">,</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>driveTime</span><span class="s7">:</span><span class="s1"> </span><span class="s8">"30 minutes"</span><span class="s7">,</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>events</span><span class="s7">:</span><span class="s1"> </span><span class="s7">[</span></p>
-<p class="p7"><span class="s4"><span class="Apple-converted-space">                    </span></span><span class="s7">{</span><span class="s4"> time</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"1:21 PM"</span><span class="s7">,</span><span class="s4"> description</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"Arrival at FCA Glacier Park Int'l Airport"</span><span class="s7">,</span><span class="s4"> details</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"All 6 passengers | United Airlines Flight #5902"</span><span class="s7">,</span><span class="s4"> action</span><span class="s7">:</span><span class="s4"> </span><span class="s1">'showArrivalFlightDetails'</span><span class="s4"> </span><span class="s7">},</span></p>
-<p class="p7"><span class="s4"><span class="Apple-converted-space">                    </span></span><span class="s7">{</span><span class="s4"> time</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"2:00 PM"</span><span class="s7">,</span><span class="s4"> description</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"Pick up rental car"</span><span class="s7">,</span><span class="s4"> details</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"Thrifty Car Rental"</span><span class="s7">,</span><span class="s4"> action</span><span class="s7">:</span><span class="s4"> </span><span class="s1">'showRentalCarDetails'</span><span class="s4"> </span><span class="s7">},</span></p>
-<p class="p7"><span class="s4"><span class="Apple-converted-space">                    </span></span><span class="s7">{</span><span class="s4"> time</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"2:30 PM"</span><span class="s7">,</span><span class="s4"> description</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"Depart to Glacier Zipline"</span><span class="s7">,</span><span class="s4"> details</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"7840 Hwy 2 E, Columbia Falls, MT"</span><span class="s7">,</span><span class="s4"> link</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"https://www.google.com/maps/search/?api=1&amp;query=7840+Hwy+2+E,Columbia+Falls,MT"</span><span class="s4"> </span><span class="s7">},</span></p>
-<p class="p7"><span class="s4"><span class="Apple-converted-space">                    </span></span><span class="s7">{</span><span class="s4"> time</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"4:00 PM"</span><span class="s7">,</span><span class="s4"> description</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"Start Glacier Zipline Tour"</span><span class="s7">,</span><span class="s4"> details</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"Booking #305101648"</span><span class="s7">,</span><span class="s4"> action</span><span class="s7">:</span><span class="s4"> </span><span class="s1">'showZiplineDetails'</span><span class="s4"> </span><span class="s7">},</span></p>
-<p class="p7"><span class="s4"><span class="Apple-converted-space">                    </span></span><span class="s7">{</span><span class="s4"> time</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"6:00 PM"</span><span class="s7">,</span><span class="s4"> description</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"Depart to Airbnb"</span><span class="s7">,</span><span class="s4"> details</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"463 Tamarack Creek Rd"</span><span class="s7">,</span><span class="s4"> link</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"https://www.google.com/maps/search/?api=1&amp;query=463+Tamarack+Creek+Rd,Whitefish,MT"</span><span class="s4"> </span><span class="s7">},</span></p>
-<p class="p7"><span class="s4"><span class="Apple-converted-space">                    </span></span><span class="s7">{</span><span class="s4"> time</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"Info"</span><span class="s7">,</span><span class="s4"> description</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"Airbnb Details"</span><span class="s7">,</span><span class="s4"> details</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"463 Tamarack Creek Rd"</span><span class="s7">,</span><span class="s4"> action</span><span class="s7">:</span><span class="s4"> </span><span class="s1">'showAirbnbDetails'</span><span class="s4"> </span><span class="s7">},</span></p>
-<p class="p7"><span class="s4"><span class="Apple-converted-space">                    </span></span><span class="s7">{</span><span class="s4"> time</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"8:30 PM"</span><span class="s7">,</span><span class="s4"> description</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"Mincha/Maariv"</span><span class="s7">,</span><span class="s4"> details</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"North Star Ranch – 355 Beaver Lake Rd"</span><span class="s7">,</span><span class="s4"> link</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"https://www.google.com/maps/search/?api=1&amp;query=355+Beaver+Lake+Rd,Whitefish,MT"</span><span class="s4"> </span><span class="s7">}</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s7">]</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s7">},</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>day</span><span class="s7">:</span><span class="s1"> </span><span class="s13">2</span><span class="s7">,</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>date</span><span class="s7">:</span><span class="s1"> </span><span class="s8">"2025-08-18"</span><span class="s7">,</span></p>
-<p class="p7"><span class="s4"><span class="Apple-converted-space">                </span>title</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"Trails, Off-Roading &amp; Dam Views"</span><span class="s7">,</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>events</span><span class="s7">:</span><span class="s1"> </span><span class="s7">[</span></p>
-<p class="p7"><span class="s4"><span class="Apple-converted-space">                    </span></span><span class="s7">{</span><span class="s4"> time</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"9:00 AM"</span><span class="s7">,</span><span class="s4"> description</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"Depart to Glacier Ridge Runners"</span><span class="s7">,</span><span class="s4"> link</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"https://www.google.com/maps/place/Glacier+Ridge+Runners/@48.3859912,-114.0609126,17z/data=!3m1!4b1!4m6!3m5!1s0x53663e69bd3af0af:0x5ad16fb22c6886f!8m2!3d48.3859912!4d-114.0583377!16s%2Fg%2F11d_tl1dd6?entry=ttu&amp;g_ep=EgoyMDI1MDgxMC4wIKXMDSoASAFQAw%3D%3D"</span><span class="s4"> </span><span class="s7">},</span></p>
-<p class="p7"><span class="s4"><span class="Apple-converted-space">                    </span></span><span class="s7">{</span><span class="s4"> time</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"10:00 AM"</span><span class="s7">,</span><span class="s4"> description</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"Side-by-Side Adventure (6-seater)"</span><span class="s7">,</span><span class="s4"> details</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"Confirmation: QZJEYW"</span><span class="s7">,</span><span class="s4"> action</span><span class="s7">:</span><span class="s4"> </span><span class="s1">'showAtvDetails'</span><span class="s4"> </span><span class="s7">},</span></p>
-<p class="p7"><span class="s4"><span class="Apple-converted-space">                    </span></span><span class="s7">{</span><span class="s4"> time</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"Reminder"</span><span class="s7">,</span><span class="s4"> description</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"Remember to bring your permits for Glacier National Park!"</span><span class="s7">,</span><span class="s4"> details</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"Park entry and vehicle reservations are required."</span><span class="s7">,</span><span class="s4"> type</span><span class="s7">:</span><span class="s4"> </span><span class="s1">'reminder'</span><span class="s4"> </span><span class="s7">},</span></p>
-<p class="p7"><span class="s4"><span class="Apple-converted-space">                    </span></span><span class="s7">{</span><span class="s4"> time</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"1:30 PM"</span><span class="s7">,</span><span class="s4"> description</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"Depart to Avalanche Lake Trailhead"</span><span class="s7">,</span><span class="s4"> link</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"https://www.google.com/maps/search/?api=1&amp;query=Avalanche+Lake+Trailhead,Glacier+National+Park"</span><span class="s4"> </span><span class="s7">},</span></p>
-<p class="p7"><span class="s4"><span class="Apple-converted-space">                    </span></span><span class="s7">{</span><span class="s4"> time</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"3:00 PM"</span><span class="s7">,</span><span class="s4"> description</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"Hike Avalanche Lake"</span><span class="s7">,</span><span class="s4"> details</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"Relatively easy 4.5-mile round trip hike."</span><span class="s7">,</span><span class="s4"> action</span><span class="s7">:</span><span class="s4"> </span><span class="s1">'showTrailInfo'</span><span class="s4"> </span><span class="s7">},</span></p>
-<p class="p7"><span class="s4"><span class="Apple-converted-space">                    </span></span><span class="s7">{</span><span class="s4"> time</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"6:00 PM"</span><span class="s7">,</span><span class="s4"> description</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"Return to Airbnb"</span><span class="s7">,</span><span class="s4"> details</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"463 Tamarack Creek Rd"</span><span class="s7">,</span><span class="s4"> link</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"https://www.google.com/maps/search/?api=1&amp;query=463+Tamarack+Creek+Rd,Whitefish,MT"</span><span class="s4"> </span><span class="s7">},</span></p>
-<p class="p7"><span class="s4"><span class="Apple-converted-space">                    </span></span><span class="s7">{</span><span class="s4"> time</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"8:30 PM"</span><span class="s7">,</span><span class="s4"> description</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"Mincha/Maariv"</span><span class="s7">,</span><span class="s4"> details</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"North Star Ranch – 355 Beaver Lake Rd"</span><span class="s7">,</span><span class="s4"> link</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"https://www.google.com/maps/search/?api=1&amp;query=355+Beaver+Lake+Rd,Whitefish,MT"</span><span class="s4"> </span><span class="s7">}</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s7">]</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s7">},</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>day</span><span class="s7">:</span><span class="s1"> </span><span class="s13">3</span><span class="s7">,</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>date</span><span class="s7">:</span><span class="s1"> </span><span class="s8">"2025-08-19"</span><span class="s7">,</span></p>
-<p class="p7"><span class="s4"><span class="Apple-converted-space">                </span>title</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"Glacier Park Highlights"</span><span class="s7">,</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>events</span><span class="s7">:</span><span class="s1"> </span><span class="s7">[</span></p>
-<p class="p7"><span class="s4"><span class="Apple-converted-space">                    </span></span><span class="s7">{</span><span class="s4"> time</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"Reminder"</span><span class="s7">,</span><span class="s4"> description</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"Remember to bring your permits for Glacier National Park!"</span><span class="s7">,</span><span class="s4"> details</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"Park entry and vehicle reservations are required."</span><span class="s7">,</span><span class="s4"> type</span><span class="s7">:</span><span class="s4"> </span><span class="s1">'reminder'</span><span class="s4"> </span><span class="s7">},</span></p>
-<p class="p7"><span class="s4"><span class="Apple-converted-space">                    </span></span><span class="s7">{</span><span class="s4"> time</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"9:00 AM"</span><span class="s7">,</span><span class="s4"> description</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"Depart to Wild River Adventures"</span><span class="s7">,</span><span class="s4"> link</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"https://www.google.com/maps/search/?api=1&amp;query=Wild+River+Adventures,West+Glacier,MT"</span><span class="s4"> </span><span class="s7">},</span></p>
-<p class="p7"><span class="s4"><span class="Apple-converted-space">                    </span></span><span class="s7">{</span><span class="s4"> time</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"10:00 AM"</span><span class="s7">,</span><span class="s4"> description</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"Rafting"</span><span class="s7">,</span><span class="s4"> details</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"Remember to bring a change of clothes!"</span><span class="s4"> </span><span class="s7">},</span></p>
-<p class="p7"><span class="s4"><span class="Apple-converted-space">                    </span></span><span class="s7">{</span><span class="s4"> time</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"1:00 PM"</span><span class="s7">,</span><span class="s4"> description</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"Depart for Going-to-the-Sun Road"</span><span class="s7">,</span><span class="s4"> details</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"Destination: Logan Pass Visitor Center"</span><span class="s7">,</span><span class="s4"> link</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"https://www.google.com/maps/place/Logan+Pass+Visitor+Center/@48.6912553,-113.730293,15z/data=!3m1!5s0x5368af512bc4b521:0x815402de1f2424db!4m6!3m5!1s0x5368af512bf83b1f:0x64cdf1479b75bbbd!8m2!3d48.6953121!4d-113.7177546!16s%2Fm%2F04yfp25?entry=ttu&amp;g_ep=EgoyMDI1MDgxMC4wIKXMDSoASAFQAw%3D%3D"</span><span class="s4"> </span><span class="s7">},</span></p>
-<p class="p7"><span class="s4"><span class="Apple-converted-space">                    </span></span><span class="s7">{</span><span class="s4"> time</span><span class="s7">:</span><span class="s4"> </span><span class="s1">""</span><span class="s7">,</span><span class="s4"> description</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"Stop: McDonald Falls"</span><span class="s7">,</span><span class="s4"> details</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"Short walk to a beautiful waterfall."</span><span class="s7">,</span><span class="s4"> link</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"https://www.google.com/maps/search/?api=1&amp;query=McDonald+Falls,Glacier+National+Park"</span><span class="s4"> </span><span class="s7">},</span></p>
-<p class="p7"><span class="s4"><span class="Apple-converted-space">                    </span></span><span class="s7">{</span><span class="s4"> time</span><span class="s7">:</span><span class="s4"> </span><span class="s1">""</span><span class="s7">,</span><span class="s4"> description</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"Stop: The Loop Overlook"</span><span class="s7">,</span><span class="s4"> details</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"Great views of Heaven's Peak."</span><span class="s7">,</span><span class="s4"> link</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"https://www.google.com/maps/search/?api=1&amp;query=The+Loop,Going-to-the-Sun+Road"</span><span class="s4"> </span><span class="s7">},</span></p>
-<p class="p7"><span class="s4"><span class="Apple-converted-space">                    </span></span><span class="s7">{</span><span class="s4"> time</span><span class="s7">:</span><span class="s4"> </span><span class="s1">""</span><span class="s7">,</span><span class="s4"> description</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"Stop: Jackson Glacier Overlook"</span><span class="s7">,</span><span class="s4"> details</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"View one of the park's largest glaciers."</span><span class="s7">,</span><span class="s4"> link</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"https://www.google.com/maps/search/?api=1&amp;query=Jackson+Glacier+Overlook"</span><span class="s4"> </span><span class="s7">},</span></p>
-<p class="p7"><span class="s4"><span class="Apple-converted-space">                    </span></span><span class="s7">{</span><span class="s4"> time</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"3:00 PM"</span><span class="s7">,</span><span class="s4"> description</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"Hike Hidden Lake Overlook"</span><span class="s7">,</span><span class="s4"> details</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"Popular boardwalk trail with stunning views."</span><span class="s7">,</span><span class="s4"> link</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"https://www.google.com/maps/search/?api=1&amp;query=Hidden+Lake+Overlook+Trailhead"</span><span class="s7">,</span><span class="s4"> action</span><span class="s7">:</span><span class="s4"> </span><span class="s1">'showHiddenLakeTrailInfo'</span><span class="s4"> </span><span class="s7">},</span></p>
-<p class="p7"><span class="s4"><span class="Apple-converted-space">                    </span></span><span class="s7">{</span><span class="s4"> time</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"5:00 PM"</span><span class="s7">,</span><span class="s4"> description</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"Depart to Apgar Village"</span><span class="s7">,</span><span class="s4"> link</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"https://www.google.com/maps/search/?api=1&amp;query=Apgar+Village,Glacier+National+Park"</span><span class="s4"> </span><span class="s7">},</span></p>
-<p class="p7"><span class="s4"><span class="Apple-converted-space">                    </span></span><span class="s7">{</span><span class="s4"> time</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"6:00 PM"</span><span class="s7">,</span><span class="s4"> description</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"Explore Apgar Village"</span><span class="s7">,</span><span class="s4"> details</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"Shops, ice cream, and views of Lake McDonald."</span><span class="s4"> </span><span class="s7">},</span></p>
-<p class="p7"><span class="s4"><span class="Apple-converted-space">                    </span></span><span class="s7">{</span><span class="s4"> time</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"7:00 PM"</span><span class="s7">,</span><span class="s4"> description</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"Sunset Cruise on Lake McDonald"</span><span class="s7">,</span><span class="s4"> details</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"Reservation Confirmed. Departs from Lake McDonald Lodge."</span><span class="s7">,</span><span class="s4"> link</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"https://www.google.com/maps/search/?api=1&amp;query=Lake+McDonald+Lodge"</span><span class="s7">,</span><span class="s4"> action</span><span class="s7">:</span><span class="s4"> </span><span class="s1">'showCruiseDetails'</span><span class="s4"> </span><span class="s7">},</span></p>
-<p class="p7"><span class="s4"><span class="Apple-converted-space">                    </span></span><span class="s7">{</span><span class="s4"> time</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"8:00 PM"</span><span class="s7">,</span><span class="s4"> description</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"Return to Airbnb"</span><span class="s7">,</span><span class="s4"> link</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"https://www.google.com/maps/search/?api=1&amp;query=463+Tamarack+Creek+Rd,Whitefish,MT"</span><span class="s4"> </span><span class="s7">}</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s7">]</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s7">},</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>day</span><span class="s7">:</span><span class="s1"> </span><span class="s13">4</span><span class="s7">,</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>date</span><span class="s7">:</span><span class="s1"> </span><span class="s8">"2025-08-20"</span><span class="s7">,</span></p>
-<p class="p7"><span class="s4"><span class="Apple-converted-space">                </span>title</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"Aerial Views, Lake Sports &amp; Sunset Ride"</span><span class="s7">,</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>events</span><span class="s7">:</span><span class="s1"> </span><span class="s7">[</span></p>
-<p class="p7"><span class="s4"><span class="Apple-converted-space">                    </span></span><span class="s7">{</span><span class="s4"> time</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"Reminder"</span><span class="s7">,</span><span class="s4"> description</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"Remember to bring your permits for Glacier National Park!"</span><span class="s7">,</span><span class="s4"> details</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"Park entry and vehicle reservations are required."</span><span class="s7">,</span><span class="s4"> type</span><span class="s7">:</span><span class="s4"> </span><span class="s1">'reminder'</span><span class="s4"> </span><span class="s7">},</span></p>
-<p class="p7"><span class="s4"><span class="Apple-converted-space">                    </span></span><span class="s7">{</span><span class="s4"> time</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"9:30 AM"</span><span class="s7">,</span><span class="s4"> description</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"Depart to Rising Sun Boat Dock"</span><span class="s7">,</span><span class="s4"> link</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"https://www.google.com/maps/search/?api=1&amp;query=Rising+Sun+Boat+Dock,Glacier+National+Park"</span><span class="s4"> </span><span class="s7">},</span></p>
-<p class="p7"><span class="s4"><span class="Apple-converted-space">                    </span></span><span class="s7">{</span><span class="s4"> time</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"1:00 PM"</span><span class="s7">,</span><span class="s4"> description</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"St. Mary Lake Boat Shuttle"</span><span class="s7">,</span><span class="s4"> details</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"Reservation Confirmed"</span><span class="s7">,</span><span class="s4"> action</span><span class="s7">:</span><span class="s4"> </span><span class="s1">'showBoatShuttleDetails'</span><span class="s4"> </span><span class="s7">},</span></p>
-<p class="p7"><span class="s4"><span class="Apple-converted-space">                    </span></span><span class="s7">{</span><span class="s4"> time</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"1:45 PM"</span><span class="s7">,</span><span class="s4"> description</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"Hike Three Falls via Piegan Pass"</span><span class="s7">,</span><span class="s4"> details</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"See St. Mary, Virginia, and Baring Falls."</span><span class="s4"> </span><span class="s7">},</span></p>
-<p class="p7"><span class="s4"><span class="Apple-converted-space">                    </span></span><span class="s7">{</span><span class="s4"> time</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"4:30 PM"</span><span class="s7">,</span><span class="s4"> description</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"Depart to Snowy Springs Outfitters"</span><span class="s7">,</span><span class="s4"> link</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"https://www.google.com/maps/search/?api=1&amp;query=Snowy+Springs+Outfitters"</span><span class="s4"> </span><span class="s7">},</span></p>
-<p class="p7"><span class="s4"><span class="Apple-converted-space">                    </span></span><span class="s7">{</span><span class="s4"> time</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"5:30 PM"</span><span class="s7">,</span><span class="s4"> description</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"Horseback Riding"</span><span class="s7">,</span><span class="s4"> details</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"Caprs Cell: &lt;a href='tel:4068905389' class='text-cyan-400 hover:underline'&gt;406-890-5389&lt;/a&gt; | Office: &lt;a href='tel:4062269225' class='text-cyan-400 hover:underline'&gt;406-226-9225&lt;/a&gt;"</span><span class="s4"> </span><span class="s7">},</span></p>
-<p class="p7"><span class="s4"><span class="Apple-converted-space">                    </span></span><span class="s7">{</span><span class="s4"> time</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"7:30 PM"</span><span class="s7">,</span><span class="s4"> description</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"Return to Airbnb"</span><span class="s7">,</span><span class="s4"> link</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"https://www.google.com/maps/search/?api=1&amp;query=463+Tamarack+Creek+Rd,Whitefish,MT"</span><span class="s4"> </span><span class="s7">}</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s7">]</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s7">},</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>day</span><span class="s7">:</span><span class="s1"> </span><span class="s13">5</span><span class="s7">,</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>date</span><span class="s7">:</span><span class="s1"> </span><span class="s8">"2025-08-21"</span><span class="s7">,</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>title</span><span class="s7">:</span><span class="s1"> </span><span class="s8">"Departure Day"</span><span class="s7">,</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>events</span><span class="s7">:</span><span class="s1"> </span><span class="s7">[</span></p>
-<p class="p7"><span class="s4"><span class="Apple-converted-space">                    </span></span><span class="s7">{</span><span class="s4"> time</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"10:00 AM"</span><span class="s7">,</span><span class="s4"> description</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"Check out of Airbnb"</span><span class="s7">,</span><span class="s4"> details</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"Depart to Flathead Lake: 7007 U.S. 93 S"</span><span class="s7">,</span><span class="s4"> link</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"https://www.google.com/maps/search/?api=1&amp;query=7007+U.S.+93+S,Lakeside,MT"</span><span class="s4"> </span><span class="s7">},</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span></span><span class="s7">{</span><span class="s1"> time</span><span class="s7">:</span><span class="s1"> </span><span class="s8">"11:00 AM"</span><span class="s7">,</span><span class="s1"> description</span><span class="s7">:</span><span class="s1"> </span><span class="s8">"Parasailing"</span><span class="s7">,</span><span class="s1"> details</span><span class="s7">:</span><span class="s1"> </span><span class="s8">"Reservation Confirmed"</span><span class="s1"> </span><span class="s7">},</span></p>
-<p class="p7"><span class="s4"><span class="Apple-converted-space">                    </span></span><span class="s7">{</span><span class="s4"> time</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"12:00 PM"</span><span class="s7">,</span><span class="s4"> description</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"Driver picks up 2 grandchildren for FCA Airport"</span><span class="s7">,</span><span class="s4"> details</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"Contact: Bobby Driver – &lt;a href='tel:4062494680' class='text-cyan-400 hover:underline'&gt;406-249-4680&lt;/a&gt;"</span><span class="s4"> </span><span class="s7">},</span></p>
-<p class="p7"><span class="s4"><span class="Apple-converted-space">                    </span></span><span class="s7">{</span><span class="s4"> time</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"1:00 PM"</span><span class="s7">,</span><span class="s4"> description</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"Water Sports with Captain"</span><span class="s7">,</span><span class="s4"> details</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"130 Bills Rd"</span><span class="s7">,</span><span class="s4"> link</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"https://www.google.com/maps/search/?api=1&amp;query=130+Bills+Rd,Somers,MT"</span><span class="s4"> </span><span class="s7">},</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span></span><span class="s7">{</span><span class="s1"> time</span><span class="s7">:</span><span class="s1"> </span><span class="s8">"5:00 PM"</span><span class="s7">,</span><span class="s1"> description</span><span class="s7">:</span><span class="s1"> </span><span class="s8">"Change &amp; freshen up"</span><span class="s1"> </span><span class="s7">},</span></p>
-<p class="p7"><span class="s4"><span class="Apple-converted-space">                    </span></span><span class="s7">{</span><span class="s4"> time</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"5:30 PM"</span><span class="s7">,</span><span class="s4"> description</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"Depart to FCA Glacier Park Int'l Airport"</span><span class="s7">,</span><span class="s4"> link</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"https://www.google.com/maps/search/?api=1&amp;query=FCA+Glacier+Park+International+Airport"</span><span class="s4"> </span><span class="s7">},</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span></span><span class="s7">{</span><span class="s1"> time</span><span class="s7">:</span><span class="s1"> </span><span class="s8">"6:00 PM"</span><span class="s7">,</span><span class="s1"> description</span><span class="s7">:</span><span class="s1"> </span><span class="s8">"Return car rental at Thrifty"</span><span class="s1"> </span><span class="s7">},</span></p>
-<p class="p7"><span class="s4"><span class="Apple-converted-space">                    </span></span><span class="s7">{</span><span class="s4"> time</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"8:02 PM"</span><span class="s7">,</span><span class="s4"> description</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"Fly out"</span><span class="s7">,</span><span class="s4"> details</span><span class="s7">:</span><span class="s4"> </span><span class="s1">"Alaska Airlines Flight #2288"</span><span class="s7">,</span><span class="s4"> action</span><span class="s7">:</span><span class="s4"> </span><span class="s1">'showFlightDetails'</span><span class="s7">}</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s7">]</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s7">}</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">];</span></p>
-<p class="p6"><span class="s11"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s12">const</span><span class="s1"> modal </span><span class="s7">=</span><span class="s1"> document</span><span class="s7">.</span><span class="s1">getElementById</span><span class="s7">(</span><span class="s8">'reservation-modal'</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s12">const</span><span class="s1"> modalBody </span><span class="s7">=</span><span class="s1"> document</span><span class="s7">.</span><span class="s1">getElementById</span><span class="s7">(</span><span class="s8">'modal-body'</span><span class="s7">);</span></p>
-<p class="p6"><span class="s11"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s12">function</span><span class="s1"> showRentalCarDetails</span><span class="s7">()</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p7"><span class="s4"><span class="Apple-converted-space">            </span>window</span><span class="s7">.</span><span class="s4">open</span><span class="s7">(</span><span class="s1">'https://view.emails.thrifty.com/?qs=76680a6cc57ecd028de0b8f439cff74fac319457c745a9c8536d733d971da123907320976e2981ea0e0a49ee21a9a587b9fd894db7d340567864147d998fb5602c0ff0de4dd57b97c1ce9fc186261de1'</span><span class="s7">,</span><span class="s4"> </span><span class="s1">'_blank'</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">}</span></p>
-<p class="p6"><span class="s11"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s12">function</span><span class="s1"> showZiplineDetails</span><span class="s7">()</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>modalBody</span><span class="s7">.</span><span class="s1">innerHTML </span><span class="s7">=</span><span class="s1"> </span><span class="s8">`</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                </span>&lt;h2 class="text-2xl font-bold text-white mb-4"&gt;Zipline Tour Details&lt;/h2&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div class="space-y-3 text-slate-300"&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p&gt;&lt;strong class="text-white"&gt;Booking #:&lt;/strong&gt; 305101648&lt;/p&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p&gt;&lt;strong class="text-white"&gt;Activity:&lt;/strong&gt; Zip Line Canopy Tour&lt;/p&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p&gt;&lt;strong class="text-white"&gt;Time:&lt;/strong&gt; 4:00 PM - 6:00 PM&lt;/p&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p&gt;&lt;strong class="text-white"&gt;Participants:&lt;/strong&gt; 6 Zipline Riders&lt;/p&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">            </span>`</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>modal</span><span class="s7">.</span><span class="s1">classList</span><span class="s7">.</span><span class="s1">add</span><span class="s7">(</span><span class="s8">'visible'</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>lucide</span><span class="s7">.</span><span class="s1">createIcons</span><span class="s7">();</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">}</span></p>
-<p class="p6"><span class="s11"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s12">function</span><span class="s1"> showAtvDetails</span><span class="s7">()</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>modalBody</span><span class="s7">.</span><span class="s1">innerHTML </span><span class="s7">=</span><span class="s1"> </span><span class="s8">`</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                </span>&lt;h2 class="text-2xl font-bold text-white mb-4"&gt;Side-by-Side Adventure Details&lt;/h2&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div class="space-y-3 text-slate-300"&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p&gt;&lt;strong class="text-white"&gt;Confirmation #:&lt;/strong&gt; QZJEYW&lt;/p&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p&gt;&lt;strong class="text-white"&gt;Activity:&lt;/strong&gt; 6-Seater Side-by-Side&lt;/p&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p&gt;&lt;strong class="text-white"&gt;Company:&lt;/strong&gt; Glacier Ridge Runners&lt;/p&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">            </span>`</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>modal</span><span class="s7">.</span><span class="s1">classList</span><span class="s7">.</span><span class="s1">add</span><span class="s7">(</span><span class="s8">'visible'</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>lucide</span><span class="s7">.</span><span class="s1">createIcons</span><span class="s7">();</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">}</span></p>
-<p class="p6"><span class="s11"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s12">function</span><span class="s1"> showAirbnbDetails</span><span class="s7">()</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>modalBody</span><span class="s7">.</span><span class="s1">innerHTML </span><span class="s7">=</span><span class="s1"> </span><span class="s8">`</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                </span>&lt;h2 class="text-2xl font-bold text-white mb-4"&gt;Airbnb Details&lt;/h2&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div class="space-y-3 text-slate-300"&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p&gt;&lt;strong class="text-white"&gt;Address:&lt;/strong&gt; 463 Tamarack Creek Rd&lt;/p&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p&gt;&lt;strong class="text-white"&gt;Booking #:&lt;/strong&gt; ORB13897290&lt;/p&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p&gt;&lt;strong class="text-white"&gt;Entry Code:&lt;/strong&gt; [TBD]&lt;/p&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p&gt;&lt;strong class="text-white"&gt;Wifi:&lt;/strong&gt; [TBD]&lt;/p&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p&gt;&lt;strong class="text-white"&gt;Management:&lt;/strong&gt; Explore Montana Rentals&lt;/p&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p&gt;&lt;strong class="text-white"&gt;Contact:&lt;/strong&gt; &lt;a href='tel:4062507649' class='text-cyan-400 hover:underline'&gt;(406) 250-7649&lt;/a&gt;&lt;/p&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">            </span>`</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>modal</span><span class="s7">.</span><span class="s1">classList</span><span class="s7">.</span><span class="s1">add</span><span class="s7">(</span><span class="s8">'visible'</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>lucide</span><span class="s7">.</span><span class="s1">createIcons</span><span class="s7">();</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">}</span></p>
-<p class="p6"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s12">function</span><span class="s1"> showTrailInfo</span><span class="s7">()</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p7"><span class="s4"><span class="Apple-converted-space">            </span>window</span><span class="s7">.</span><span class="s4">open</span><span class="s7">(</span><span class="s1">'https://www.alltrails.com/trail/us/montana/avalanche-lake--6'</span><span class="s7">,</span><span class="s4"> </span><span class="s1">'_blank'</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">}</span></p>
-<p class="p6"><span class="s11"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s12">function</span><span class="s1"> showHiddenLakeTrailInfo</span><span class="s7">()</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p7"><span class="s4"><span class="Apple-converted-space">            </span>window</span><span class="s7">.</span><span class="s4">open</span><span class="s7">(</span><span class="s1">'https://www.alltrails.com/trail/us/montana/hidden-lake-overlook'</span><span class="s7">,</span><span class="s4"> </span><span class="s1">'_blank'</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">}</span></p>
-<p class="p6"><span class="s11"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s12">function</span><span class="s1"> showCruiseDetails</span><span class="s7">()</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>modalBody</span><span class="s7">.</span><span class="s1">innerHTML </span><span class="s7">=</span><span class="s1"> </span><span class="s8">`</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                </span>&lt;h2 class="text-2xl font-bold text-white mb-4"&gt;Sunset Cruise Details&lt;/h2&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div class="space-y-3 text-slate-300"&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p&gt;&lt;strong class="text-white"&gt;Confirmation #:&lt;/strong&gt; PS071625136&lt;/p&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p&gt;&lt;strong class="text-white"&gt;Name:&lt;/strong&gt; Nochum Wisnicki&lt;/p&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p&gt;&lt;strong class="text-white"&gt;Location:&lt;/strong&gt; Lake McDonald&lt;/p&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p&gt;&lt;strong class="text-white"&gt;Tour:&lt;/strong&gt; Scenic Tour&lt;/p&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p&gt;&lt;strong class="text-white"&gt;Passengers:&lt;/strong&gt; 6 Adults (ages 13 and up)&lt;/p&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">            </span>`</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>modal</span><span class="s7">.</span><span class="s1">classList</span><span class="s7">.</span><span class="s1">add</span><span class="s7">(</span><span class="s8">'visible'</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>lucide</span><span class="s7">.</span><span class="s1">createIcons</span><span class="s7">();</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">}</span></p>
-<p class="p6"><span class="s11"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s12">function</span><span class="s1"> showFlightDetails</span><span class="s7">()</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>modalBody</span><span class="s7">.</span><span class="s1">innerHTML </span><span class="s7">=</span><span class="s1"> </span><span class="s8">`</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                </span>&lt;h2 class="text-2xl font-bold text-white mb-4"&gt;Flight Summary&lt;/h2&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div class="space-y-6 text-slate-300"&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;!-- Flight 1 --&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;p class="font-semibold text-white"&gt;Alaska 2288&lt;/p&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;p&gt;Kalispell (FCA) to Seattle (SEA)&lt;/p&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;p&gt;Departs: 8:02 PM | Arrives: 8:36 PM&lt;/p&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;!-- Flight 2 --&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;p class="font-semibold text-white"&gt;Alaska 1040&lt;/p&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;p&gt;Seattle (SEA) to Ontario (ONT)&lt;/p&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;p&gt;Departs: 9:17 PM | Arrives: 11:59 PM&lt;/p&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;!-- Passengers --&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div class="border-t border-slate-700 pt-4"&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;p class="font-semibold text-white mb-2"&gt;Passengers&lt;/p&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;p&gt;Norman Wisnicki - E-ticket: 0272109688072&lt;/p&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;p&gt;Harriet Wisnicki - E-ticket: 0272109688073&lt;/p&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">            </span>`</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>modal</span><span class="s7">.</span><span class="s1">classList</span><span class="s7">.</span><span class="s1">add</span><span class="s7">(</span><span class="s8">'visible'</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>lucide</span><span class="s7">.</span><span class="s1">createIcons</span><span class="s7">();</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">}</span></p>
-<p class="p6"><span class="s11"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s12">function</span><span class="s1"> showArrivalFlightDetails</span><span class="s7">()</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>modalBody</span><span class="s7">.</span><span class="s1">innerHTML </span><span class="s7">=</span><span class="s1"> </span><span class="s8">`</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                </span>&lt;h2 class="text-2xl font-bold text-white mb-4"&gt;Arrival Flight Details&lt;/h2&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div class="space-y-3 text-slate-300"&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p&gt;&lt;strong class="text-white"&gt;Flight:&lt;/strong&gt; UA 5902 (Operated by SKYWEST DBA UNITED EXPRESS)&lt;/p&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p&gt;&lt;strong class="text-white"&gt;Route:&lt;/strong&gt; Los Angeles (LAX) to Kalispell (FCA)&lt;/p&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p&gt;&lt;strong class="text-white"&gt;Departs:&lt;/strong&gt; 9:22 AM&lt;/p&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p&gt;&lt;strong class="text-white"&gt;Arrives:&lt;/strong&gt; 1:21 PM&lt;/p&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p&gt;&lt;strong class="text-white"&gt;Duration:&lt;/strong&gt; 2h 59m&lt;/p&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p&gt;&lt;strong class="text-white"&gt;Aircraft:&lt;/strong&gt; Embraer E175&lt;/p&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">            </span>`</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>modal</span><span class="s7">.</span><span class="s1">classList</span><span class="s7">.</span><span class="s1">add</span><span class="s7">(</span><span class="s8">'visible'</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>lucide</span><span class="s7">.</span><span class="s1">createIcons</span><span class="s7">();</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">}</span></p>
-<p class="p6"><span class="s11"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s12">function</span><span class="s1"> showBoatShuttleDetails</span><span class="s7">()</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>modalBody</span><span class="s7">.</span><span class="s1">innerHTML </span><span class="s7">=</span><span class="s1"> </span><span class="s8">`</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                </span>&lt;h2 class="text-2xl font-bold text-white mb-4"&gt;Boat Shuttle Details&lt;/h2&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div class="space-y-3 text-slate-300"&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p&gt;&lt;strong class="text-white"&gt;Location:&lt;/strong&gt; St. Mary Lake at Rising Sun&lt;/p&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p&gt;&lt;strong class="text-white"&gt;Tour:&lt;/strong&gt; Scenic Tour + Hike&lt;/p&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p&gt;&lt;strong class="text-white"&gt;Passengers:&lt;/strong&gt; 6 Adults (ages 13 and up)&lt;/p&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">            </span>`</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>modal</span><span class="s7">.</span><span class="s1">classList</span><span class="s7">.</span><span class="s1">add</span><span class="s7">(</span><span class="s8">'visible'</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>lucide</span><span class="s7">.</span><span class="s1">createIcons</span><span class="s7">();</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">}</span></p>
-<p class="p6"><span class="s11"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s12">function</span><span class="s1"> closeModal</span><span class="s7">()</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>modal</span><span class="s7">.</span><span class="s1">classList</span><span class="s7">.</span><span class="s1">remove</span><span class="s7">(</span><span class="s8">'visible'</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">}</span></p>
-<p class="p6"><span class="s11"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s12">function</span><span class="s1"> renderItinerary</span><span class="s7">()</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s12">const</span><span class="s1"> container </span><span class="s7">=</span><span class="s1"> document</span><span class="s7">.</span><span class="s1">getElementById</span><span class="s7">(</span><span class="s8">'itinerary-container'</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s12">const</span><span class="s1"> today </span><span class="s7">=</span><span class="s1"> </span><span class="s12">new</span><span class="s1"> </span><span class="s14">Date</span><span class="s7">();</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>today</span><span class="s7">.</span><span class="s1">setHours</span><span class="s7">(</span><span class="s13">0</span><span class="s7">,</span><span class="s1"> </span><span class="s13">0</span><span class="s7">,</span><span class="s1"> </span><span class="s13">0</span><span class="s7">,</span><span class="s1"> </span><span class="s13">0</span><span class="s7">);</span><span class="s1"><span class="Apple-converted-space"> </span></span></p>
-<p class="p6"><span class="s11"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>itineraryData</span><span class="s7">.</span><span class="s1">forEach</span><span class="s7">((</span><span class="s1">dayData</span><span class="s7">,</span><span class="s1"> index</span><span class="s7">)</span><span class="s1"> </span><span class="s7">=&gt;</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s12">const</span><span class="s1"> dayCard </span><span class="s7">=</span><span class="s1"> document</span><span class="s7">.</span><span class="s1">createElement</span><span class="s7">(</span><span class="s8">'details'</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>dayCard</span><span class="s7">.</span><span class="s1">className </span><span class="s7">=</span><span class="s1"> </span><span class="s8">'day-card'</span><span class="s7">;</span></p>
-<p class="p6"><span class="s1"><span class="Apple-converted-space">                </span></span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s12">const</span><span class="s1"> dayDate </span><span class="s7">=</span><span class="s1"> </span><span class="s12">new</span><span class="s1"> </span><span class="s14">Date</span><span class="s7">(</span><span class="s1">dayData</span><span class="s7">.</span><span class="s1">date </span><span class="s7">+</span><span class="s1"> </span><span class="s8">'T00:00:00-06:00'</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s12">if</span><span class="s1"> </span><span class="s7">(</span><span class="s1">dayDate</span><span class="s7">.</span><span class="s1">toDateString</span><span class="s7">()</span><span class="s1"> </span><span class="s7">===</span><span class="s1"> today</span><span class="s7">.</span><span class="s1">toDateString</span><span class="s7">())</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>dayCard</span><span class="s7">.</span><span class="s1">classList</span><span class="s7">.</span><span class="s1">add</span><span class="s7">(</span><span class="s8">'current-day'</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>dayCard</span><span class="s7">.</span><span class="s1">open </span><span class="s7">=</span><span class="s1"> </span><span class="s12">true</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s7">}</span></p>
-<p class="p6"><span class="s11"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s12">let</span><span class="s1"> eventsHtml </span><span class="s7">=</span><span class="s1"> </span><span class="s8">''</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>dayData</span><span class="s7">.</span><span class="s1">events</span><span class="s7">.</span><span class="s1">forEach</span><span class="s7">(</span><span class="s1">event </span><span class="s7">=&gt;</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span></span><span class="s12">const</span><span class="s1"> hasLink </span><span class="s7">=</span><span class="s1"> event</span><span class="s7">.</span><span class="s1">link</span><span class="s7">;</span></p>
-<p class="p7"><span class="s4"><span class="Apple-converted-space">                    </span></span><span class="s12">const</span><span class="s4"> eventDescription </span><span class="s7">=</span><span class="s4"> hasLink </span><span class="s7">?</span><span class="s4"> </span><span class="s1">`&lt;a href="</span><span class="s7">${</span><span class="s4">event</span><span class="s7">.</span><span class="s4">link</span><span class="s7">}</span><span class="s1">" target="_blank" class="hover:underline text-cyan-400"&gt;</span><span class="s7">${</span><span class="s4">event</span><span class="s7">.</span><span class="s4">description</span><span class="s7">}</span><span class="s1"> &lt;i data-lucide="external-link" class="inline-block w-4 h-4 -mt-1"&gt;&lt;/i&gt;&lt;/a&gt;`</span><span class="s4"> </span><span class="s7">:</span><span class="s4"> event</span><span class="s7">.</span><span class="s4">description</span><span class="s7">;</span></p>
-<p class="p6"><span class="s1"><span class="Apple-converted-space">                    </span></span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span></span><span class="s12">let</span><span class="s1"> actionButton </span><span class="s7">=</span><span class="s1"> </span><span class="s8">''</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span></span><span class="s12">if</span><span class="s1"> </span><span class="s7">(</span><span class="s1">event</span><span class="s7">.</span><span class="s1">action</span><span class="s7">)</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span></span><span class="s12">let</span><span class="s1"> buttonText </span><span class="s7">=</span><span class="s1"> </span><span class="s8">"View Details"</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span></span><span class="s12">if</span><span class="s1"> </span><span class="s7">(</span><span class="s1">event</span><span class="s7">.</span><span class="s1">action </span><span class="s7">===</span><span class="s1"> </span><span class="s8">'showTrailInfo'</span><span class="s1"> </span><span class="s7">||</span><span class="s1"> event</span><span class="s7">.</span><span class="s1">action </span><span class="s7">===</span><span class="s1"> </span><span class="s8">'showHiddenLakeTrailInfo'</span><span class="s7">)</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                            </span>buttonText </span><span class="s7">=</span><span class="s1"> </span><span class="s8">"Trail Info"</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span></span><span class="s7">}</span><span class="s1"> </span><span class="s12">else</span><span class="s1"> </span><span class="s12">if</span><span class="s1"> </span><span class="s7">(</span><span class="s1">event</span><span class="s7">.</span><span class="s1">action </span><span class="s7">===</span><span class="s1"> </span><span class="s8">'showCruiseDetails'</span><span class="s1"> </span><span class="s7">||</span><span class="s1"> event</span><span class="s7">.</span><span class="s1">action </span><span class="s7">===</span><span class="s1"> </span><span class="s8">'showBoatShuttleDetails'</span><span class="s7">)</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                            </span>buttonText </span><span class="s7">=</span><span class="s1"> </span><span class="s8">"Reservation Details"</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span></span><span class="s7">}</span><span class="s1"> </span><span class="s12">else</span><span class="s1"> </span><span class="s12">if</span><span class="s1"> </span><span class="s7">(</span><span class="s1">event</span><span class="s7">.</span><span class="s1">action </span><span class="s7">===</span><span class="s1"> </span><span class="s8">'showFlightDetails'</span><span class="s1"> </span><span class="s7">||</span><span class="s1"> event</span><span class="s7">.</span><span class="s1">action </span><span class="s7">===</span><span class="s1"> </span><span class="s8">'showArrivalFlightDetails'</span><span class="s7">)</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                            </span>buttonText </span><span class="s7">=</span><span class="s1"> </span><span class="s8">"Flight Details"</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span></span><span class="s7">}</span></p>
-<p class="p7"><span class="s4"><span class="Apple-converted-space">                        </span>actionButton </span><span class="s7">=</span><span class="s4"> </span><span class="s1">`&lt;button onclick="</span><span class="s7">${</span><span class="s4">event</span><span class="s7">.</span><span class="s4">action</span><span class="s7">}</span><span class="s1">()" class="mt-2 inline-flex items-center px-3 py-1 bg-slate-700 hover:bg-slate-600 text-cyan-400 text-sm font-semibold rounded-md"&gt;</span><span class="s7">${</span><span class="s4">buttonText</span><span class="s7">}</span><span class="s1"> &lt;i data-lucide="arrow-right" class="w-4 h-4 ml-2"&gt;&lt;/i&gt;&lt;/button&gt;`</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span></span><span class="s7">}</span></p>
-<p class="p6"><span class="s1"><span class="Apple-converted-space">                    </span></span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span></span><span class="s12">if</span><span class="s1"> </span><span class="s7">(</span><span class="s1">event</span><span class="s7">.</span><span class="s1">type </span><span class="s7">===</span><span class="s1"> </span><span class="s8">'reminder'</span><span class="s7">)</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>eventsHtml </span><span class="s7">+=</span><span class="s1"> </span><span class="s8">`</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;li class="flex items-start space-x-6 pl-8"&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;div class="flex-shrink-0 w-24 text-right"&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                                    </span>&lt;span class="text-cyan-400 font-medium"&gt;Reminder&lt;/span&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;/div&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;div class="relative w-full"&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                                    </span>&lt;div class="absolute top-1.5 left-[-13px] h-full border-l-2 border-slate-700"&gt;&lt;/div&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                                    </span>&lt;div class="absolute top-2 left-[-18px] w-3 h-3 bg-cyan-400 rounded-full border-2 border-slate-700"&gt;&lt;/div&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                                    </span>&lt;p class="font-semibold text-white"&gt;</span><span class="s7">${</span><span class="s4">event</span><span class="s7">.</span><span class="s4">description</span><span class="s7">}</span><span class="s1">&lt;/p&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                                    </span>&lt;p class="text-sm text-slate-400 mt-1"&gt;</span><span class="s7">${</span><span class="s4">event</span><span class="s7">.</span><span class="s4">details </span><span class="s7">||</span><span class="s4"> </span><span class="s1">''</span><span class="s7">}</span><span class="s1">&lt;/p&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;/div&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;/li&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                        </span>`</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span></span><span class="s7">}</span><span class="s1"> </span><span class="s12">else</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>eventsHtml </span><span class="s7">+=</span><span class="s1"> </span><span class="s8">`</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;li class="flex items-start space-x-6 pl-8"&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;div class="flex-shrink-0 w-24 text-right"&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                                    </span>&lt;span class="text-slate-300 font-medium"&gt;</span><span class="s7">${</span><span class="s4">event</span><span class="s7">.</span><span class="s4">time</span><span class="s7">}</span><span class="s1">&lt;/span&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;/div&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;div class="relative w-full"&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                                    </span>&lt;div class="absolute top-1.5 left-[-13px] h-full border-l-2 border-slate-700"&gt;&lt;/div&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                                    </span>&lt;div class="absolute top-2 left-[-18px] w-3 h-3 bg-slate-600 rounded-full border-2 border-slate-700"&gt;&lt;/div&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                                    </span>&lt;p class="font-semibold text-white"&gt;</span><span class="s7">${</span><span class="s4">eventDescription</span><span class="s7">}</span><span class="s1">&lt;/p&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                                    </span>&lt;p class="text-sm text-slate-400 mt-1"&gt;</span><span class="s7">${</span><span class="s4">event</span><span class="s7">.</span><span class="s4">details </span><span class="s7">||</span><span class="s4"> </span><span class="s1">''</span><span class="s7">}</span><span class="s1">&lt;/p&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                                    </span></span><span class="s7">${</span><span class="s4">actionButton</span><span class="s7">}</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;/div&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;/li&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                        </span>`</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span></span><span class="s7">}</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s7">});</span></p>
-<p class="p6"><span class="s11"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>dayCard</span><span class="s7">.</span><span class="s1">innerHTML </span><span class="s7">=</span><span class="s1"> </span><span class="s8">`</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;summary class="p-4 cursor-pointer flex justify-between items-center list-none"&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;div&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;p class="font-semibold text-white"&gt;</span><span class="s7">${</span><span class="s12">new</span><span class="s4"> </span><span class="s14">Date</span><span class="s7">(</span><span class="s4">dayData</span><span class="s7">.</span><span class="s4">date </span><span class="s7">+</span><span class="s4"> </span><span class="s1">'T00:00:00-06:00'</span><span class="s7">).</span><span class="s4">toLocaleDateString</span><span class="s7">(</span><span class="s1">'en-US'</span><span class="s7">,</span><span class="s4"> </span><span class="s7">{</span><span class="s4"> weekday</span><span class="s7">:</span><span class="s4"> </span><span class="s1">'long'</span><span class="s7">,</span><span class="s4"> month</span><span class="s7">:</span><span class="s4"> </span><span class="s1">'long'</span><span class="s7">,</span><span class="s4"> day</span><span class="s7">:</span><span class="s4"> </span><span class="s1">'numeric'</span><span class="s7">,</span><span class="s4"> year</span><span class="s7">:</span><span class="s4"> </span><span class="s1">'numeric'</span><span class="s4"> </span><span class="s7">})}</span><span class="s1">&lt;/p&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;p class="text-sm text-slate-400"&gt;</span><span class="s7">${</span><span class="s4">dayData</span><span class="s7">.</span><span class="s4">title</span><span class="s7">}</span><span class="s1">&lt;/p&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;div class="transform transition-transform duration-300"&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                           </span>&lt;i data-lucide="chevron-down" class="w-5 h-5 text-slate-400"&gt;&lt;/i&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/summary&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div class="details-content"&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;div class="pt-2 pb-4 px-4 border-t border-slate-700"&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;ul class="space-y-6 mt-4"&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                                </span></span><span class="s7">${</span><span class="s4">eventsHtml</span><span class="s7">}</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;/ul&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                </span>`</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>container</span><span class="s7">.</span><span class="s1">appendChild</span><span class="s7">(</span><span class="s1">dayCard</span><span class="s7">);</span></p>
-<p class="p6"><span class="s1"><span class="Apple-converted-space">                 </span></span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>dayCard</span><span class="s7">.</span><span class="s1">addEventListener</span><span class="s7">(</span><span class="s8">'toggle'</span><span class="s7">,</span><span class="s1"> </span><span class="s7">(</span><span class="s1">event</span><span class="s7">)</span><span class="s1"> </span><span class="s7">=&gt;</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span></span><span class="s12">const</span><span class="s1"> icon </span><span class="s7">=</span><span class="s1"> event</span><span class="s7">.</span><span class="s1">target</span><span class="s7">.</span><span class="s1">querySelector</span><span class="s7">(</span><span class="s8">'summary div i'</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span></span><span class="s12">if</span><span class="s1"> </span><span class="s7">(</span><span class="s1">icon</span><span class="s7">)</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>icon</span><span class="s7">.</span><span class="s1">classList</span><span class="s7">.</span><span class="s1">toggle</span><span class="s7">(</span><span class="s8">'rotate-180'</span><span class="s7">,</span><span class="s1"> event</span><span class="s7">.</span><span class="s1">target</span><span class="s7">.</span><span class="s1">open</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span></span><span class="s7">}</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s7">});</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s7">});</span></p>
-<p class="p6"><span class="s11"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>lucide</span><span class="s7">.</span><span class="s1">createIcons</span><span class="s7">();</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">}</span></p>
-<p class="p6"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s12">function</span><span class="s1"> updateTime</span><span class="s7">()</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s12">const</span><span class="s1"> timeEl </span><span class="s7">=</span><span class="s1"> document</span><span class="s7">.</span><span class="s1">getElementById</span><span class="s7">(</span><span class="s8">'local-time'</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s12">const</span><span class="s1"> time </span><span class="s7">=</span><span class="s1"> </span><span class="s12">new</span><span class="s1"> </span><span class="s14">Date</span><span class="s7">().</span><span class="s1">toLocaleTimeString</span><span class="s7">(</span><span class="s8">'en-US'</span><span class="s7">,</span><span class="s1"> </span><span class="s7">{</span><span class="s1"> timeZone</span><span class="s7">:</span><span class="s1"> </span><span class="s8">'America/Denver'</span><span class="s7">,</span><span class="s1"> hour</span><span class="s7">:</span><span class="s1"> </span><span class="s8">'2-digit'</span><span class="s7">,</span><span class="s1"> minute</span><span class="s7">:</span><span class="s1"> </span><span class="s8">'2-digit'</span><span class="s7">,</span><span class="s1"> hour12</span><span class="s7">:</span><span class="s1"> </span><span class="s12">true</span><span class="s1"> </span><span class="s7">});</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>timeEl</span><span class="s7">.</span><span class="s1">textContent </span><span class="s7">=</span><span class="s1"> time</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">}</span></p>
-<p class="p6"><span class="s11"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>document</span><span class="s7">.</span><span class="s1">addEventListener</span><span class="s7">(</span><span class="s8">'DOMContentLoaded'</span><span class="s7">,</span><span class="s1"> </span><span class="s7">()</span><span class="s1"> </span><span class="s7">=&gt;</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>renderItinerary</span><span class="s7">();</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>updateTime</span><span class="s7">();</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>setInterval</span><span class="s7">(</span><span class="s1">updateTime</span><span class="s7">,</span><span class="s1"> </span><span class="s13">1000</span><span class="s1"> </span><span class="s7">*</span><span class="s1"> </span><span class="s13">60</span><span class="s7">);</span></p>
-<p class="p6"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
-<p class="p5"><span class="s4"><span class="Apple-converted-space">            </span></span><span class="s1">// Close modal on overlay click</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>modal</span><span class="s7">.</span><span class="s1">addEventListener</span><span class="s7">(</span><span class="s8">'click'</span><span class="s7">,</span><span class="s1"> </span><span class="s7">(</span><span class="s1">e</span><span class="s7">)</span><span class="s1"> </span><span class="s7">=&gt;</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s12">if</span><span class="s1"> </span><span class="s7">(</span><span class="s1">e</span><span class="s7">.</span><span class="s1">target </span><span class="s7">===</span><span class="s1"> modal</span><span class="s7">)</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>closeModal</span><span class="s7">();</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s7">}</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s7">});</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">});</span></p>
-<p class="p6"><span class="s11"></span><br></p>
-<p class="p1"><span class="s4"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;/</span><span class="s1">script</span><span class="s3">&gt;</span></p>
-<p class="p1"><span class="s3">&lt;/</span><span class="s1">body</span><span class="s3">&gt;</span></p>
-<p class="p1"><span class="s3">&lt;/</span><span class="s1">html</span><span class="s3">&gt;</span></p>
-<p class="p6"><span class="s11"></span><br></p>
+
+    <div class="container mx-auto p-4 md:p-8 max-w-4xl">
+        <header class="text-white mb-6">
+            <div class="flex justify-between items-center border-b border-slate-700 pb-4">
+                <h1 class="text-2xl font-bold flex items-center">
+                    <i data-lucide="mountain-snow" class="mr-3 text-cyan-400"></i>
+                    Wisnicki Family Trip
+                </h1>
+                <div class="text-right">
+                    <p class="font-semibold">Glacier National Park</p>
+                    <p class="text-sm text-slate-400">August 17 - 21, 2025</p>
+                </div>
+            </div>
+        </header>
+
+        <div class="grid grid-cols-3 gap-4 text-center bg-[#162039] p-4 rounded-lg mb-8 border border-slate-700">
+            <div>
+                <p class="text-xs text-slate-400 uppercase tracking-wider">Current Activity</p>
+                <p class="text-lg font-semibold text-white">Trip Overview</p>
+            </div>
+            <div>
+                <p class="text-xs text-slate-400 uppercase tracking-wider">Local Time</p>
+                <p class="text-lg font-semibold text-white" id="local-time">--:-- --</p>
+            </div>
+            <div>
+                <p class="text-xs text-slate-400 uppercase tracking-wider">Weather</p>
+                <a href="https://www.google.com/search?q=weather+in+glacier+national+park" target="_blank" class="text-lg font-semibold text-cyan-400 hover:underline cursor-pointer">View Forecast</a>
+            </div>
+        </div>
+
+        <div id="itinerary-container" class="space-y-4">
+            <!-- Itinerary will be dynamically generated here -->
+        </div>
+        
+        <footer class="text-center mt-12 text-slate-500">
+            <p>Itinerary by Avi Weisz 848-480-5197</p>
+        </footer>
+    </div>
+
+    <!-- Reservation Modal -->
+    <div id="reservation-modal" class="modal-overlay">
+        <div class="modal-content">
+            <button onclick="closeModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+            <div id="modal-body">
+                <!-- Modal content will be injected here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const itineraryData = [
+            {
+                day: 1,
+                date: "2025-08-17",
+                title: "Arrival & Zipline Fun",
+                driveTime: "30 minutes",
+                events: [
+                    { time: "1:21 PM", description: "Arrival at FCA Glacier Park Int'l Airport", details: "All 6 passengers | United Airlines Flight #5902", action: 'showArrivalFlightDetails' },
+                    { time: "2:00 PM", description: "Pick up rental car", details: "Thrifty Car Rental", action: 'showRentalCarDetails' },
+                    { time: "2:30 PM", description: "Depart to Glacier Zipline", details: "7840 Hwy 2 E, Columbia Falls, MT", link: "https://www.google.com/maps/search/?api=1&query=7840+Hwy+2+E,Columbia+Falls,MT" },
+                    { time: "4:00 PM", description: "Start Glacier Zipline Tour", details: "Booking #305101648", action: 'showZiplineDetails' },
+                    { time: "6:00 PM", description: "Depart to Airbnb", details: "463 Tamarack Creek Rd", link: "https://www.google.com/maps/search/?api=1&query=463+Tamarack+Creek+Rd,Whitefish,MT" },
+                    { time: "Info", description: "Airbnb Details", details: "463 Tamarack Creek Rd", action: 'showAirbnbDetails' },
+                    { time: "8:30 PM", description: "Mincha/Maariv", details: "North Star Ranch – 355 Beaver Lake Rd", link: "https://www.google.com/maps/search/?api=1&query=355+Beaver+Lake+Rd,Whitefish,MT" }
+                ]
+            },
+            {
+                day: 2,
+                date: "2025-08-18",
+                title: "Trails, Off-Roading & Dam Views",
+                events: [
+                    { time: "9:00 AM", description: "Depart to Glacier Ridge Runners", link: "https://www.google.com/maps/place/Glacier+Ridge+Runners/@48.3859912,-114.0609126,17z/data=!3m1!4b1!4m6!3m5!1s0x53663e69bd3af0af:0x5ad16fb22c6886f!8m2!3d48.3859912!4d-114.0583377!16s%2Fg%2F11d_tl1dd6?entry=ttu&g_ep=EgoyMDI1MDgxMC4wIKXMDSoASAFQAw%3D%3D" },
+                    { time: "10:00 AM", description: "Side-by-Side Adventure (6-seater)", details: "Confirmation: QZJEYW", action: 'showAtvDetails' },
+                    { time: "Reminder", description: "Remember to bring your permits for Glacier National Park!", details: "Park entry and vehicle reservations are required.", type: 'reminder' },
+                    { time: "1:30 PM", description: "Depart to Avalanche Lake Trailhead", link: "https://www.google.com/maps/search/?api=1&query=Avalanche+Lake+Trailhead,Glacier+National+Park" },
+                    { time: "3:00 PM", description: "Hike Avalanche Lake", details: "Relatively easy 4.5-mile round trip hike.", action: 'showTrailInfo' },
+                    { time: "6:00 PM", description: "Return to Airbnb", details: "463 Tamarack Creek Rd", link: "https://www.google.com/maps/search/?api=1&query=463+Tamarack+Creek+Rd,Whitefish,MT" },
+                    { time: "8:30 PM", description: "Mincha/Maariv", details: "North Star Ranch – 355 Beaver Lake Rd", link: "https://www.google.com/maps/search/?api=1&query=355+Beaver+Lake+Rd,Whitefish,MT" }
+                ]
+            },
+            {
+                day: 3,
+                date: "2025-08-19",
+                title: "Glacier Park Highlights",
+                events: [
+                    { time: "Reminder", description: "Remember to bring your permits for Glacier National Park!", details: "Park entry and vehicle reservations are required.", type: 'reminder' },
+                    { time: "9:00 AM", description: "Depart to Wild River Adventures", link: "https://www.google.com/maps/search/?api=1&query=Wild+River+Adventures,West+Glacier,MT" },
+                    { time: "10:00 AM", description: "Rafting", details: "Remember to bring a change of clothes!" },
+                    { time: "1:00 PM", description: "Depart for Going-to-the-Sun Road", details: "Destination: Logan Pass Visitor Center", link: "https://www.google.com/maps/place/Logan+Pass+Visitor+Center/@48.6912553,-113.730293,15z/data=!3m1!5s0x5368af512bc4b521:0x815402de1f2424db!4m6!3m5!1s0x5368af512bf83b1f:0x64cdf1479b75bbbd!8m2!3d48.6953121!4d-113.7177546!16s%2Fm%2F04yfp25?entry=ttu&g_ep=EgoyMDI1MDgxMC4wIKXMDSoASAFQAw%3D%3D" },
+                    { time: "", description: "Stop: McDonald Falls", details: "Short walk to a beautiful waterfall.", link: "https://www.google.com/maps/search/?api=1&query=McDonald+Falls,Glacier+National+Park" },
+                    { time: "", description: "Stop: The Loop Overlook", details: "Great views of Heaven's Peak.", link: "https://www.google.com/maps/search/?api=1&query=The+Loop,Going-to-the-Sun+Road" },
+                    { time: "", description: "Stop: Jackson Glacier Overlook", details: "View one of the park's largest glaciers.", link: "https://www.google.com/maps/search/?api=1&query=Jackson+Glacier+Overlook" },
+                    { time: "3:00 PM", description: "Hike Hidden Lake Overlook", details: "Popular boardwalk trail with stunning views.", link: "https://www.google.com/maps/search/?api=1&query=Hidden+Lake+Overlook+Trailhead", action: 'showHiddenLakeTrailInfo' },
+                    { time: "5:00 PM", description: "Depart to Apgar Village", link: "https://www.google.com/maps/search/?api=1&query=Apgar+Village,Glacier+National+Park" },
+                    { time: "6:00 PM", description: "Explore Apgar Village", details: "Shops, ice cream, and views of Lake McDonald." },
+                    { time: "7:00 PM", description: "Sunset Cruise on Lake McDonald", details: "Reservation Confirmed. Departs from Lake McDonald Lodge.", link: "https://www.google.com/maps/search/?api=1&query=Lake+McDonald+Lodge", action: 'showCruiseDetails' },
+                    { time: "8:00 PM", description: "Return to Airbnb", link: "https://www.google.com/maps/search/?api=1&query=463+Tamarack+Creek+Rd,Whitefish,MT" }
+                ]
+            },
+            {
+                day: 4,
+                date: "2025-08-20",
+                title: "Aerial Views, Lake Sports & Sunset Ride",
+                events: [
+                    { time: "Reminder", description: "Remember to bring your permits for Glacier National Park!", details: "Park entry and vehicle reservations are required.", type: 'reminder' },
+                    { time: "9:30 AM", description: "Depart to Rising Sun Boat Dock", link: "https://www.google.com/maps/search/?api=1&query=Rising+Sun+Boat+Dock,Glacier+National+Park" },
+                    { time: "1:00 PM", description: "St. Mary Lake Boat Shuttle", details: "Reservation Confirmed", action: 'showBoatShuttleDetails' },
+                    { time: "1:45 PM", description: "Hike Three Falls via Piegan Pass", details: "See St. Mary, Virginia, and Baring Falls." },
+                    { time: "4:30 PM", description: "Depart to Snowy Springs Outfitters", link: "https://www.google.com/maps/search/?api=1&query=Snowy+Springs+Outfitters" },
+                    { time: "5:30 PM", description: "Horseback Riding", details: "Caprs Cell: <a href='tel:4068905389' class='text-cyan-400 hover:underline'>406-890-5389</a> | Office: <a href='tel:4062269225' class='text-cyan-400 hover:underline'>406-226-9225</a>" },
+                    { time: "7:30 PM", description: "Return to Airbnb", link: "https://www.google.com/maps/search/?api=1&query=463+Tamarack+Creek+Rd,Whitefish,MT" }
+                ]
+            },
+            {
+                day: 5,
+                date: "2025-08-21",
+                title: "Departure Day",
+                events: [
+                    { time: "10:00 AM", description: "Check out of Airbnb", details: "Depart to Flathead Lake: 7007 U.S. 93 S", link: "https://www.google.com/maps/search/?api=1&query=7007+U.S.+93+S,Lakeside,MT" },
+                    { time: "11:00 AM", description: "Parasailing", details: "Reservation Confirmed" },
+                    { time: "12:00 PM", description: "Driver picks up 2 grandchildren for FCA Airport", details: "Contact: Bobby Driver – <a href='tel:4062494680' class='text-cyan-400 hover:underline'>406-249-4680</a>" },
+                    { time: "1:00 PM", description: "Water Sports with Captain", details: "130 Bills Rd", link: "https://www.google.com/maps/search/?api=1&query=130+Bills+Rd,Somers,MT" },
+                    { time: "5:00 PM", description: "Change & freshen up" },
+                    { time: "5:30 PM", description: "Depart to FCA Glacier Park Int'l Airport", link: "https://www.google.com/maps/search/?api=1&query=FCA+Glacier+Park+International+Airport" },
+                    { time: "6:00 PM", description: "Return car rental at Thrifty" },
+                    { time: "8:02 PM", description: "Fly out", details: "Alaska Airlines Flight #2288", action: 'showFlightDetails'}
+                ]
+            }
+        ];
+
+        const modal = document.getElementById('reservation-modal');
+        const modalBody = document.getElementById('modal-body');
+
+        function showRentalCarDetails() {
+            window.open('https://view.emails.thrifty.com/?qs=76680a6cc57ecd028de0b8f439cff74fac319457c745a9c8536d733d971da123907320976e2981ea0e0a49ee21a9a587b9fd894db7d340567864147d998fb5602c0ff0de4dd57b97c1ce9fc186261de1', '_blank');
+        }
+
+        function showZiplineDetails() {
+            modalBody.innerHTML = `
+                <h2 class="text-2xl font-bold text-white mb-4">Zipline Tour Details</h2>
+                <div class="space-y-3 text-slate-300">
+                    <p><strong class="text-white">Booking #:</strong> 305101648</p>
+                    <p><strong class="text-white">Activity:</strong> Zip Line Canopy Tour</p>
+                    <p><strong class="text-white">Time:</strong> 4:00 PM - 6:00 PM</p>
+                    <p><strong class="text-white">Participants:</strong> 6 Zipline Riders</p>
+                </div>
+            `;
+            modal.classList.add('visible');
+            lucide.createIcons();
+        }
+
+        function showAtvDetails() {
+            modalBody.innerHTML = `
+                <h2 class="text-2xl font-bold text-white mb-4">Side-by-Side Adventure Details</h2>
+                <div class="space-y-3 text-slate-300">
+                    <p><strong class="text-white">Confirmation #:</strong> QZJEYW</p>
+                    <p><strong class="text-white">Activity:</strong> 6-Seater Side-by-Side</p>
+                    <p><strong class="text-white">Company:</strong> Glacier Ridge Runners</p>
+                </div>
+            `;
+            modal.classList.add('visible');
+            lucide.createIcons();
+        }
+
+        function showAirbnbDetails() {
+            modalBody.innerHTML = `
+                <h2 class="text-2xl font-bold text-white mb-4">Airbnb Details</h2>
+                <div class="space-y-3 text-slate-300">
+                    <p><strong class="text-white">Address:</strong> 463 Tamarack Creek Rd</p>
+                    <p><strong class="text-white">Booking #:</strong> ORB13897290</p>
+                    <p><strong class="text-white">Entry Code:</strong> [TBD]</p>
+                    <p><strong class="text-white">Wifi:</strong> [TBD]</p>
+                    <p><strong class="text-white">Management:</strong> Explore Montana Rentals</p>
+                    <p><strong class="text-white">Contact:</strong> <a href='tel:4062507649' class='text-cyan-400 hover:underline'>(406) 250-7649</a></p>
+                </div>
+            `;
+            modal.classList.add('visible');
+            lucide.createIcons();
+        }
+        
+        function showTrailInfo() {
+            window.open('https://www.alltrails.com/trail/us/montana/avalanche-lake--6', '_blank');
+        }
+
+        function showHiddenLakeTrailInfo() {
+            window.open('https://www.alltrails.com/trail/us/montana/hidden-lake-overlook', '_blank');
+        }
+
+        function showCruiseDetails() {
+            modalBody.innerHTML = `
+                <h2 class="text-2xl font-bold text-white mb-4">Sunset Cruise Details</h2>
+                <div class="space-y-3 text-slate-300">
+                    <p><strong class="text-white">Confirmation #:</strong> PS071625136</p>
+                    <p><strong class="text-white">Name:</strong> Nochum Wisnicki</p>
+                    <p><strong class="text-white">Location:</strong> Lake McDonald</p>
+                    <p><strong class="text-white">Tour:</strong> Scenic Tour</p>
+                    <p><strong class="text-white">Passengers:</strong> 6 Adults (ages 13 and up)</p>
+                </div>
+            `;
+            modal.classList.add('visible');
+            lucide.createIcons();
+        }
+
+        function showFlightDetails() {
+            modalBody.innerHTML = `
+                <h2 class="text-2xl font-bold text-white mb-4">Flight Summary</h2>
+                <div class="space-y-6 text-slate-300">
+                    <!-- Flight 1 -->
+                    <div>
+                        <p class="font-semibold text-white">Alaska 2288</p>
+                        <p>Kalispell (FCA) to Seattle (SEA)</p>
+                        <p>Departs: 8:02 PM | Arrives: 8:36 PM</p>
+                    </div>
+                    <!-- Flight 2 -->
+                    <div>
+                        <p class="font-semibold text-white">Alaska 1040</p>
+                        <p>Seattle (SEA) to Ontario (ONT)</p>
+                        <p>Departs: 9:17 PM | Arrives: 11:59 PM</p>
+                    </div>
+                    <!-- Passengers -->
+                    <div class="border-t border-slate-700 pt-4">
+                        <p class="font-semibold text-white mb-2">Passengers</p>
+                        <p>Norman Wisnicki - E-ticket: 0272109688072</p>
+                        <p>Harriet Wisnicki - E-ticket: 0272109688073</p>
+                    </div>
+                </div>
+            `;
+            modal.classList.add('visible');
+            lucide.createIcons();
+        }
+
+        function showArrivalFlightDetails() {
+            modalBody.innerHTML = `
+                <h2 class="text-2xl font-bold text-white mb-4">Arrival Flight Details</h2>
+                <div class="space-y-3 text-slate-300">
+                    <p><strong class="text-white">Flight:</strong> UA 5902 (Operated by SKYWEST DBA UNITED EXPRESS)</p>
+                    <p><strong class="text-white">Route:</strong> Los Angeles (LAX) to Kalispell (FCA)</p>
+                    <p><strong class="text-white">Departs:</strong> 9:22 AM</p>
+                    <p><strong class="text-white">Arrives:</strong> 1:21 PM</p>
+                    <p><strong class="text-white">Duration:</strong> 2h 59m</p>
+                    <p><strong class="text-white">Aircraft:</strong> Embraer E175</p>
+                </div>
+            `;
+            modal.classList.add('visible');
+            lucide.createIcons();
+        }
+
+        function showBoatShuttleDetails() {
+            modalBody.innerHTML = `
+                <h2 class="text-2xl font-bold text-white mb-4">Boat Shuttle Details</h2>
+                <div class="space-y-3 text-slate-300">
+                    <p><strong class="text-white">Location:</strong> St. Mary Lake at Rising Sun</p>
+                    <p><strong class="text-white">Tour:</strong> Scenic Tour + Hike</p>
+                    <p><strong class="text-white">Passengers:</strong> 6 Adults (ages 13 and up)</p>
+                </div>
+            `;
+            modal.classList.add('visible');
+            lucide.createIcons();
+        }
+
+        function closeModal() {
+            modal.classList.remove('visible');
+        }
+
+        function renderItinerary() {
+            const container = document.getElementById('itinerary-container');
+            const today = new Date();
+            today.setHours(0, 0, 0, 0); 
+
+            itineraryData.forEach((dayData, index) => {
+                const dayCard = document.createElement('details');
+                dayCard.className = 'day-card';
+                
+                const dayDate = new Date(dayData.date + 'T00:00:00-06:00');
+                if (dayDate.toDateString() === today.toDateString()) {
+                    dayCard.classList.add('current-day');
+                    dayCard.open = true;
+                }
+
+                let eventsHtml = '';
+                dayData.events.forEach(event => {
+                    const hasLink = event.link;
+                    const eventDescription = hasLink ? `<a href="${event.link}" target="_blank" class="hover:underline text-cyan-400">${event.description} <i data-lucide="external-link" class="inline-block w-4 h-4 -mt-1"></i></a>` : event.description;
+                    
+                    let actionButton = '';
+                    if (event.action) {
+                        let buttonText = "View Details";
+                        if (event.action === 'showTrailInfo' || event.action === 'showHiddenLakeTrailInfo') {
+                            buttonText = "Trail Info";
+                        } else if (event.action === 'showCruiseDetails' || event.action === 'showBoatShuttleDetails') {
+                            buttonText = "Reservation Details";
+                        } else if (event.action === 'showFlightDetails' || event.action === 'showArrivalFlightDetails') {
+                            buttonText = "Flight Details";
+                        }
+                        actionButton = `<button onclick="${event.action}()" class="mt-2 inline-flex items-center px-3 py-1 bg-slate-700 hover:bg-slate-600 text-cyan-400 text-sm font-semibold rounded-md">${buttonText} <i data-lucide="arrow-right" class="w-4 h-4 ml-2"></i></button>`;
+                    }
+                    
+                    if (event.type === 'reminder') {
+                        eventsHtml += `
+                            <li class="flex items-start space-x-6 pl-8">
+                                <div class="flex-shrink-0 w-24 text-right">
+                                    <span class="text-cyan-400 font-medium">Reminder</span>
+                                </div>
+                                <div class="relative w-full">
+                                    <div class="absolute top-1.5 left-[-13px] h-full border-l-2 border-slate-700"></div>
+                                    <div class="absolute top-2 left-[-18px] w-3 h-3 bg-cyan-400 rounded-full border-2 border-slate-700"></div>
+                                    <p class="font-semibold text-white">${event.description}</p>
+                                    <p class="text-sm text-slate-400 mt-1">${event.details || ''}</p>
+                                </div>
+                            </li>
+                        `;
+                    } else {
+                        eventsHtml += `
+                            <li class="flex items-start space-x-6 pl-8">
+                                <div class="flex-shrink-0 w-24 text-right">
+                                    <span class="text-slate-300 font-medium">${event.time}</span>
+                                </div>
+                                <div class="relative w-full">
+                                    <div class="absolute top-1.5 left-[-13px] h-full border-l-2 border-slate-700"></div>
+                                    <div class="absolute top-2 left-[-18px] w-3 h-3 bg-slate-600 rounded-full border-2 border-slate-700"></div>
+                                    <p class="font-semibold text-white">${eventDescription}</p>
+                                    <p class="text-sm text-slate-400 mt-1">${event.details || ''}</p>
+                                    ${actionButton}
+                                </div>
+                            </li>
+                        `;
+                    }
+                });
+
+                dayCard.innerHTML = `
+                    <summary class="p-4 cursor-pointer flex justify-between items-center list-none">
+                        <div>
+                            <p class="font-semibold text-white">${new Date(dayData.date + 'T00:00:00-06:00').toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}</p>
+                            <p class="text-sm text-slate-400">${dayData.title}</p>
+                        </div>
+                        <div class="transform transition-transform duration-300">
+                           <i data-lucide="chevron-down" class="w-5 h-5 text-slate-400"></i>
+                        </div>
+                    </summary>
+                    <div class="details-content">
+                        <div class="pt-2 pb-4 px-4 border-t border-slate-700">
+                            <ul class="space-y-6 mt-4">
+                                ${eventsHtml}
+                            </ul>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(dayCard);
+                 
+                dayCard.addEventListener('toggle', (event) => {
+                    const icon = event.target.querySelector('summary div i');
+                    if (icon) {
+                        icon.classList.toggle('rotate-180', event.target.open);
+                    }
+                });
+            });
+
+            lucide.createIcons();
+        }
+        
+        function updateTime() {
+            const timeEl = document.getElementById('local-time');
+            const time = new Date().toLocaleTimeString('en-US', { timeZone: 'America/Denver', hour: '2-digit', minute: '2-digit', hour12: true });
+            timeEl.textContent = time;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderItinerary();
+            updateTime();
+            setInterval(updateTime, 1000 * 60);
+            
+            // Close modal on overlay click
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    closeModal();
+                }
+            });
+        });
+
+    </script>
 </body>
 </html>
