@@ -6,6 +6,7 @@
     <title>Wisnicki Family - Glacier National Park Itinerary</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body {
@@ -69,6 +70,8 @@
             position: relative;
             transform: scale(0.95);
             transition: transform 0.3s ease;
+            max-height: 90vh;
+            overflow-y: auto;
         }
         .modal-overlay.visible .modal-content {
             transform: scale(1);
@@ -78,6 +81,12 @@
             border-left: 4px solid #67e8f9;
             padding: 0.75rem 1rem;
             border-radius: 0.25rem;
+        }
+        .boarding-pass {
+            background-color: #fff;
+            color: #000;
+            border-radius: 0.5rem;
+            border: 1px solid #e2e8f0;
         }
     </style>
 </head>
@@ -210,7 +219,9 @@
                     { time: "5:00 PM", description: "Change & freshen up" },
                     { time: "5:30 PM", description: "Depart to FCA Glacier Park Int'l Airport", link: "https://www.google.com/maps/search/?api=1&query=FCA+Glacier+Park+International+Airport" },
                     { time: "6:00 PM", description: "Return car rental at Thrifty" },
-                    { time: "8:02 PM", description: "Fly out", details: "Alaska Airlines Flight #2288", action: 'showFlightDetails'}
+                    { time: "8:02 PM", description: "Fly out", details: "Alaska Airlines Flight #2288", action: 'showFlightDetails'},
+                    { time: "11:59 PM", description: "Land in ONT Airport" },
+                    { time: "12:30 AM", description: "Driver will be waiting for you", details: "Abe - <a href='tel:4242000013' class='text-cyan-400 hover:underline'>424-200-0013</a>" }
                 ]
             }
         ];
@@ -321,20 +332,79 @@
         }
 
         function showArrivalFlightDetails() {
+            const passengers = [
+                { name: 'ABRAHAM/SHAYNA', seat: '17C', group: 4 },
+                { name: 'WISNICKI/AHUVA', seat: '17D', group: 3 },
+                { name: 'WISNICKI/AYALA', seat: '17A', group: 3 },
+                { name: 'WISNICKI/HARRIETMAGNA', seat: '18A', group: 3 },
+                { name: 'WISNICKI/NORMANSTEVEN', seat: '18B', group: 3 },
+                { name: 'WISNICKI/ZAHAVA', seat: '17B', group: 3 },
+            ];
+
+            let boardingPassesHtml = passengers.map((p, index) => `
+                <div class="boarding-pass p-4 mb-4">
+                    <div class="flex justify-between items-center pb-2 border-b">
+                        <div class="font-bold text-lg text-blue-700">UNITED</div>
+                        <div>
+                            <p class="text-xs text-right">FLIGHT</p>
+                            <p class="font-bold text-right">UA 5902</p>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-3 gap-4 text-center my-4">
+                        <div>
+                            <p class="text-xs text-gray-500">FROM</p>
+                            <p class="text-2xl font-bold">LAX</p>
+                            <p class="text-xs">Los Angeles</p>
+                        </div>
+                        <div class="flex items-center justify-center">
+                             <i data-lucide="plane" class="text-gray-400"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs text-gray-500">TO</p>
+                            <p class="text-2xl font-bold">FCA</p>
+                            <p class="text-xs">Kalispell</p>
+                        </div>
+                    </div>
+                    <div class="border-t pt-2">
+                        <p class="text-xs text-gray-500">PASSENGER</p>
+                        <p class="font-semibold">${p.name}</p>
+                    </div>
+                    <div class="grid grid-cols-3 gap-4 text-center my-4">
+                        <div>
+                            <p class="text-xs text-gray-500">SEAT</p>
+                            <p class="font-bold text-lg">${p.seat}</p>
+                        </div>
+                        <div>
+                            <p class="text-xs text-gray-500">GROUP</p>
+                            <p class="font-bold text-lg">${p.group}</p>
+                        </div>
+                        <div>
+                            <p class="text-xs text-gray-500">BOARDING</p>
+                            <p class="font-bold text-lg">8:57 AM</p>
+                        </div>
+                    </div>
+                    <div class="flex justify-center">
+                        <svg id="barcode-${index}"></svg>
+                    </div>
+                </div>
+            `).join('');
+
             modalBody.innerHTML = `
                 <h2 class="text-2xl font-bold text-white mb-4">Arrival Flight Details</h2>
-                <div class="space-y-3 text-slate-300">
-                    <p><strong class="text-white">Confirmation #:</strong> F8H1R3</p>
-                    <p><strong class="text-white">Flight:</strong> UA 5902 (Operated by SKYWEST DBA UNITED EXPRESS)</p>
-                    <p><strong class="text-white">Route:</strong> Los Angeles (LAX) to Kalispell (FCA)</p>
-                    <p><strong class="text-white">Departs:</strong> 9:22 AM</p>
-                    <p><strong class="text-white">Arrives:</strong> 1:21 PM</p>
-                    <p><strong class="text-white">Duration:</strong> 2h 59m</p>
-                    <p><strong class="text-white">Aircraft:</strong> Embraer E175</p>
-                </div>
+                <p class="mb-4 text-slate-300"><strong class="text-white">Confirmation #:</strong> F8H1R3</p>
+                ${boardingPassesHtml}
             `;
             modal.classList.add('visible');
             lucide.createIcons();
+
+            passengers.forEach((p, index) => {
+                JsBarcode(`#barcode-${index}`, `F8H1R3 ${p.name.replace('/', '')} ${p.seat}`, {
+                    format: "CODE128",
+                    width: 2,
+                    height: 50,
+                    displayValue: false
+                });
+            });
         }
 
         function showBoatShuttleDetails() {
